@@ -5,6 +5,7 @@ import { DonorCategory, Gender } from "../config/enums";
 import Donation from "./Donation";
 
 class Donor extends Model<DonorAttributes> implements DonorAttributes {
+  id!: number;
   idCopy!: string;
   nationalNumber!: number;
   firstName!: string;
@@ -20,6 +21,11 @@ class Donor extends Model<DonorAttributes> implements DonorAttributes {
 
 Donor.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     idCopy: {
       type: DataTypes.STRING,
       allowNull: false,
