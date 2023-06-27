@@ -1,6 +1,6 @@
 export enum FamilyCategory {
   Orphans = "Orphans",
-  Poor = "Poor ",
+  Poor = "Poor",
   Other = "other",
 }
 
