@@ -1,15 +1,16 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
-interface MemberNeedsAttributes {
-  id: number;
-  needName: string;
-}
+import { MemberNeedsAttributes } from "../config/types";
+import { Priority } from "../config/enums";
+
 class MemberNeeds
   extends Model<MemberNeedsAttributes>
   implements MemberNeedsAttributes
 {
   id!: number;
+  familyMemberId!: number;
   needName!: string;
+  priority!: Priority;
 }
 
 MemberNeeds.init(
@@ -19,9 +20,17 @@ MemberNeeds.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    familyMemberId: {
+      type: DataTypes.INTEGER,
+    },
     needName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    priority: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 5,
     },
   },
   {
