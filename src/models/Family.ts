@@ -1,27 +1,12 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
 import FamilyMember from "./FamilyMember";
-
-enum FamilyCategory {
-  Orphans = "Orphans",
-  Poor = "Poor ",
-  Other = "other",
-}
-
-interface FamilyAttributes {
-  id: number;
-  nameOfPersonCharge: string;
-  email: string;
-  address: string;
-  contactNumber: string;
-  houseCondition: string;
-  notes: string;
-  familyCategory: FamilyCategory;
-}
+import { FamilyAttributes } from "../config/types";
+import { FamilyCategory } from "../config/enums";
 
 class Family extends Model<FamilyAttributes> implements FamilyAttributes {
   id!: number;
-  nameOfPersonCharge!: string;
+  personCharge!: string;
   email!: string;
   address!: string;
   contactNumber!: string;
@@ -37,8 +22,8 @@ Family.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    nameOfPersonCharge: {
-      type: DataTypes.STRING,
+    personCharge: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     email: {
@@ -102,4 +87,5 @@ FamilyMember.belongsTo(Family, {
   foreignKey: "FamilyId",
   as: "Family",
 });
+
 export default Family;

@@ -1,19 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
-
-interface HealthHistoryAttributes {
-  id: number;
-  disease: {
-    diseaseName: string;
-    medicineName: string;
-  };
-}
+import { HealthHistoryAttributes } from "../config/types";
 
 class HealthHistory
   extends Model<HealthHistoryAttributes>
   implements HealthHistoryAttributes
 {
   id!: number;
+  familyMemberId!: number;
   disease!: {
     diseaseName: string;
     medicineName: string;
@@ -25,6 +19,9 @@ HealthHistory.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    familyMemberId: {
+      type: DataTypes.INTEGER,
     },
     disease: {
       type: DataTypes.JSONB,

@@ -2,39 +2,15 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
 import MemberNeeds from "./MemberNeeds";
 import HealthHistory from "./HealthHistory";
-
-enum Gender {
-  Male = "male",
-  Female = "female",
-}
-enum MaritalStatus {
-  Single = "Single",
-  Married = "Married",
-  Divorced = "Divorced",
-  Widowed = "Widowed",
-}
-
-interface FamilyMemberAttributes {
-  id: number;
-  firstName: string;
-  lastName: string;
-  gender: Gender;
-  maritalStatus: MaritalStatus;
-  address: string;
-  email: string;
-  dateOfBirth: Date;
-  phoneNumber: string;
-  isWorking: boolean;
-  proficient: string;
-  totalIncome: number;
-  educationLevel: number;
-}
+import { FamilyMemberAttributes } from "../config/types";
+import { Gender, MaritalStatus } from "../config/enums";
 
 class FamilyMember
   extends Model<FamilyMemberAttributes>
   implements FamilyMemberAttributes
 {
   id!: number;
+  FamilyId!: number;
   firstName!: string;
   lastName!: string;
   gender!: Gender;
@@ -54,6 +30,9 @@ FamilyMember.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    FamilyId: {
+      type: DataTypes.INTEGER,
     },
     firstName: {
       type: DataTypes.STRING,

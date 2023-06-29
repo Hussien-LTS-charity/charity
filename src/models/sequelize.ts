@@ -5,7 +5,7 @@ const sequelize = new Sequelize({
   username: "asura",
   password: "0000",
   host: "localhost",
-  port: 5432, // Adjust the port if necessary
+  port: 5432,
   dialect: "postgres",
 });
 
