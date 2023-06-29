@@ -11,13 +11,15 @@ import {
 
 export interface FamilyAttributes {
   id: number;
-  personCharge: string;
+  // DonationId: number;
+  personCharge: number;
   email: string;
   address: string;
   contactNumber: string;
   houseCondition: string;
   notes: string;
   familyCategory: FamilyCategory;
+  familyPriority: Priority;
 }
 
 export interface FamilyMemberAttributes {
@@ -32,6 +34,7 @@ export interface FamilyMemberAttributes {
   dateOfBirth: Date;
   phoneNumber: string;
   isWorking: boolean;
+  isPersonCharge: boolean;
   proficient: string;
   totalIncome: number;
   educationLevel: number;
@@ -50,7 +53,7 @@ export interface MemberNeedsAttributes {
   id: number;
   familyMemberId: number;
   needName: string;
-  priority: Priority;
+  MemberPriority: Priority;
 }
 
 export interface DonorAttributes {
@@ -113,9 +116,8 @@ export interface AfterDonationsAttributes {
 
 export interface DonationsRecordAttributes {
   id: number;
-  DonationId: number;
   FamilyId: number;
-  FamilyMemberId: number;
+  // FamilyMemberId: number;
   donationDate: Date;
   donationGiven: {
     isMony: boolean;

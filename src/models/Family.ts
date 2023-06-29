@@ -2,17 +2,19 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
 import FamilyMember from "./FamilyMember";
 import { FamilyAttributes } from "../config/types";
-import { FamilyCategory } from "../config/enums";
+import { FamilyCategory, Priority } from "../config/enums";
 
 class Family extends Model<FamilyAttributes> implements FamilyAttributes {
   id!: number;
-  personCharge!: string;
+  // DonationId!: number;
+  personCharge!: number;
   email!: string;
   address!: string;
   contactNumber!: string;
   houseCondition!: string;
   notes!: string;
   familyCategory!: FamilyCategory;
+  familyPriority!: Priority;
 }
 
 Family.init(
@@ -22,6 +24,11 @@ Family.init(
       autoIncrement: true,
       primaryKey: true,
     },
+
+    // DonationId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    // },
     personCharge: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -70,6 +77,11 @@ Family.init(
     familyCategory: {
       type: DataTypes.ENUM(...Object.values(FamilyCategory)),
       allowNull: false,
+    },
+    familyPriority: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 5,
     },
   },
   {

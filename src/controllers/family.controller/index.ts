@@ -12,6 +12,7 @@ export const httpAddFamilyHandler = async (
     const {
       id,
       personCharge,
+      familyPriority,
       email,
       address,
       contactNumber,
@@ -25,6 +26,7 @@ export const httpAddFamilyHandler = async (
     const newFamilyData: FamilyAttributes = {
       id,
       personCharge,
+      familyPriority,
       email,
       address,
       contactNumber,
@@ -47,6 +49,7 @@ export const httpAddFamilyHandler = async (
           dateOfBirth,
           phoneNumber,
           isWorking,
+          isPersonCharge,
           proficient,
           totalIncome,
           educationLevel,
@@ -65,6 +68,7 @@ export const httpAddFamilyHandler = async (
           dateOfBirth,
           phoneNumber,
           isWorking,
+          isPersonCharge,
           proficient,
           totalIncome,
           educationLevel,
@@ -93,7 +97,12 @@ export const httpGetFamilyHandler = async (
     const { familyId } = req.params;
 
     // Find the family by ID
-    const family = await Family.findByPk(familyId);
+    const family = await Family.findByPk(familyId, {
+      include: {
+        model: FamilyMember,
+        as: "FamilyMember",
+      },
+    });
 
     !family
       ? // If family is not found, send a not found response
@@ -116,7 +125,7 @@ export const httpGetAllFamiliesHandler = async (
     const families = await Family.findAll();
 
     // Send the families array in the response
-    res.status(200).json({ families });
+    res.status(200).json({ count: families.length, families });
   } catch (error) {
     // Handle any errors
     console.error("Error retrieving families:", error);
@@ -136,6 +145,7 @@ export const httpEditFamilyHandler = async (
     const {
       id,
       personCharge,
+      familyPriority,
       email,
       address,
       contactNumber,
@@ -146,6 +156,7 @@ export const httpEditFamilyHandler = async (
 
     const updatedFamilyData: FamilyAttributes = {
       id,
+      familyPriority,
       personCharge,
       email,
       address,
@@ -180,11 +191,11 @@ export const httpEditFamilyHandler = async (
 };
 
 export const httpDeleteFamilyHandler = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { familyId } = req.params;
 
   try {
     const deletedFamilyCount = await Family.destroy({
-      where: { id },
+      where: { id: familyId },
     });
 
     if (deletedFamilyCount === 0) {
