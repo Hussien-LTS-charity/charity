@@ -10,7 +10,7 @@ class MemberNeeds
   id!: number;
   familyMemberId!: number;
   needName!: string;
-  priority!: Priority;
+  MemberPriority!: Priority;
 }
 
 MemberNeeds.init(
@@ -27,7 +27,7 @@ MemberNeeds.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    priority: {
+    MemberPriority: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 5,

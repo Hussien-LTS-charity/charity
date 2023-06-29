@@ -15,9 +15,8 @@ class DonationsRecord
   implements DonationsRecordAttributes
 {
   id!: number;
-  DonationId!: number;
   FamilyId!: number;
-  FamilyMemberId!: number;
+  // FamilyMemberId!: number;
   donationDate!: Date;
   donationGiven!: {
     isMony: boolean;
@@ -45,18 +44,14 @@ DonationsRecord.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    DonationId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     FamilyId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    FamilyMemberId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    // FamilyMemberId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
     donationDate: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -88,23 +83,23 @@ DonationsRecord.belongsTo(Donation, {
   as: "Donor",
 });
 
-Donation.hasOne(Family, {
-  foreignKey: "FamilyId",
-  as: "Family",
-});
+// Donation.hasOne(Family, {
+//   foreignKey: "DonationId",
+//   as: "Family",
+// });
 
-Family.belongsTo(Donation, {
-  foreignKey: "FamilyId",
-  as: "Donation",
-});
+// Family.belongsTo(Donation, {
+//   foreignKey: "DonationId",
+//   as: "Donation",
+// });
 
-Donation.hasOne(FamilyMember, {
-  foreignKey: "FamilyMemberId",
-  as: "FamilyMember",
-});
+// Donation.hasOne(FamilyMember, {
+//   foreignKey: "FamilyMemberId",
+//   as: "FamilyMember",
+// });
 
-FamilyMember.belongsTo(Donation, {
-  foreignKey: "FamilyMemberId",
-  as: "Donation",
-});
+// FamilyMember.belongsTo(Donation, {
+//   foreignKey: "FamilyMemberId",
+//   as: "Donation",
+// });
 export default DonationsRecord;

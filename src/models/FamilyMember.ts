@@ -20,6 +20,7 @@ class FamilyMember
   dateOfBirth!: Date;
   phoneNumber!: string;
   isWorking!: boolean;
+  isPersonCharge!: boolean;
   proficient!: string;
   totalIncome!: number;
   educationLevel!: number;
@@ -94,6 +95,10 @@ FamilyMember.init(
           msg: "Phone number must be between 10 and 15 digits",
         },
       },
+    },
+    isPersonCharge: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
     },
     isWorking: {
       type: DataTypes.BOOLEAN,

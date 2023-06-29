@@ -11,8 +11,8 @@ const familyRouter: Router = express.Router();
 
 familyRouter.post("/", httpAddFamilyHandler);
 familyRouter.get("/", httpGetAllFamiliesHandler);
-familyRouter.get("/:id", httpGetFamilyHandler);
-familyRouter.put("/:id", httpEditFamilyHandler);
-familyRouter.delete("/:id", httpDeleteFamilyHandler);
+familyRouter.get("/:familyId", httpGetFamilyHandler);
+familyRouter.put("/:familyId", httpEditFamilyHandler);
+familyRouter.delete("/:familyId", httpDeleteFamilyHandler);
 
 export default familyRouter;
