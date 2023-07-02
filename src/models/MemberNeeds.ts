@@ -8,6 +8,7 @@ class MemberNeeds
   implements MemberNeedsAttributes
 {
   id!: number;
+  FamilyId!: number;
   familyMemberId!: number;
   needName!: string;
   MemberPriority!: Priority;
@@ -19,6 +20,10 @@ MemberNeeds.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    FamilyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     familyMemberId: {
       type: DataTypes.INTEGER,

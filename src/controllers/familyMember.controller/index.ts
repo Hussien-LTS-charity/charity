@@ -53,8 +53,8 @@ export const httpAddFamilyMemberHandler = async (
     });
   } catch (error) {
     // Handle any errors
-    console.error("Error adding family:", error);
-    res.status(500).json({ message: "Failed to add family" });
+    console.error("Error adding Family Member:", error);
+    res.status(500).json({ message: "Failed to add Family Member" });
   }
 };
 

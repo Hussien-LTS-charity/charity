@@ -7,6 +7,7 @@ class HealthHistory
   implements HealthHistoryAttributes
 {
   id!: number;
+  FamilyId!: number;
   familyMemberId!: number;
   disease!: {
     diseaseName: string;
@@ -20,12 +21,16 @@ HealthHistory.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    FamilyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     familyMemberId: {
       type: DataTypes.INTEGER,
     },
     disease: {
       type: DataTypes.JSONB,
-      allowNull: false,
+      allowNull: true,
       defaultValue: {},
     },
   },

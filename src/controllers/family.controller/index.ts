@@ -102,6 +102,7 @@ export const httpGetFamilyHandler = async (
         model: FamilyMember,
         as: "FamilyMember",
       },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
     });
 
     !family
@@ -190,6 +191,7 @@ export const httpEditFamilyHandler = async (
   }
 };
 
+//TODO:prevent the delete family member if there is any Family Member
 export const httpDeleteFamilyHandler = async (req: Request, res: Response) => {
   const { familyId } = req.params;
 

@@ -42,6 +42,7 @@ export interface FamilyMemberAttributes {
 
 export interface HealthHistoryAttributes {
   id: number;
+  FamilyId: number;
   familyMemberId: number;
   disease: {
     diseaseName: string;
@@ -51,6 +52,7 @@ export interface HealthHistoryAttributes {
 
 export interface MemberNeedsAttributes {
   id: number;
+  FamilyId: number;
   familyMemberId: number;
   needName: string;
   MemberPriority: Priority;

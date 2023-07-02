@@ -3,6 +3,8 @@ import sequelize from "./sequelize";
 import FamilyMember from "./FamilyMember";
 import { FamilyAttributes } from "../config/types";
 import { FamilyCategory, Priority } from "../config/enums";
+import HealthHistory from "./HealthHistory";
+import MemberNeeds from "./MemberNeeds";
 
 class Family extends Model<FamilyAttributes> implements FamilyAttributes {
   id!: number;
@@ -25,10 +27,6 @@ Family.init(
       primaryKey: true,
     },
 
-    // DonationId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    // },
     personCharge: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -84,10 +82,7 @@ Family.init(
       defaultValue: 5,
     },
   },
-  {
-    sequelize,
-    modelName: "Family",
-  }
+  { sequelize, modelName: "Family" }
 );
 
 Family.hasMany(FamilyMember, {
@@ -100,4 +95,23 @@ FamilyMember.belongsTo(Family, {
   as: "Family",
 });
 
+Family.hasMany(HealthHistory, {
+  foreignKey: "FamilyId",
+  as: "HealthHistory",
+});
+
+HealthHistory.belongsTo(Family, {
+  foreignKey: "FamilyId",
+  as: "Family",
+});
+
+Family.hasMany(MemberNeeds, {
+  foreignKey: "FamilyId",
+  as: "MemberNeeds",
+});
+
+MemberNeeds.belongsTo(Family, {
+  foreignKey: "FamilyId",
+  as: "Family",
+});
 export default Family;

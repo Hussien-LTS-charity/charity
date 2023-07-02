@@ -16,14 +16,14 @@ const PORT = process.env.PORT || 3000;
 async function syncModels() {
   try {
     // Sync other models if available
-    await Family.sync({ alter: true });
-    await FamilyMember.sync({ alter: true });
-    await MemberNeeds.sync({ alter: true });
-    await HealthHistory.sync({ alter: true });
-    await Donor.sync({ alter: true });
-    await Donation.sync({ alter: true });
-    await AfterDonations.sync({ alter: true });
-    await DonationsRecords.sync({ alter: true });
+    await Family.sync({ force: true });
+    await FamilyMember.sync({ force: true });
+    await MemberNeeds.sync({ force: true });
+    await HealthHistory.sync({ force: true });
+    await Donor.sync({ force: true });
+    await Donation.sync({ force: true });
+    await AfterDonations.sync({ force: true });
+    await DonationsRecords.sync({ force: true });
     console.log("Models are synchronized with the database");
     // Start your server or perform other operations here
     app.listen(PORT, () => {
