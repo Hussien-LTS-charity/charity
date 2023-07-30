@@ -122,13 +122,10 @@ export const httpGetAllFamiliesHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Retrieve all families from the database
     const families = await Family.findAll();
 
-    // Send the families array in the response
     res.status(200).json({ count: families.length, families });
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving families:", error);
     res.status(500).json({ message: "Failed to retrieve families" });
   }
