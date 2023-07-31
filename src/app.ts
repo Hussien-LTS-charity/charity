@@ -16,7 +16,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello, world!");
 });
 app.use("/api/family", familyRouter);
-app.use("/api/family-member/:familyId", familyMemberRouter);
+app.use("/api/family-member", familyMemberRouter);
 app.use("/api/health-history/:familyId", healthHistoryRouter);
 app.use("/api/member-needs/:familyId", memberNeedsRouter);
 app.use("/api/donor/", donorRouter);
