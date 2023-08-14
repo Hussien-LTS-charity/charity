@@ -13,7 +13,7 @@ export const httpAddFamilyMemberHandler = async (
     if (!family) {
 
       return res.status(404).json({
-        message: "Failed to retrive Family"
+        message: "Failed to retrieve Family"
       });
     }
     // Extract the Family Member data from the request body
@@ -69,9 +69,8 @@ export const httpAddFamilyMemberHandler = async (
 export const httpGetSpecificFamilyMemberHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // console.log(req.params);
     const { familyId, familyMemberId } = req.params;
 
     const familyMember = await FamilyMember.findOne({
@@ -81,50 +80,52 @@ export const httpGetSpecificFamilyMemberHandler = async (
       },
     });
 
-    !familyMember
-      ?
-      res.status(404).json({ message: "family member not found" })
-      :
-      res.status(200).json({ familyMember });
+    if (!familyMember) {
+      return res.status(404).json({ message: "family member not found" })
+    } else {
+      return res.status(200).json({ familyMember });
+    }
+
+
+
   } catch (error) {
     console.error("Error retrieving family member:", error);
-    res.status(500).json({ message: "Failed to retrieve family member" });
+    return res.status(500).json({ message: "Failed to retrieve family member" });
   }
 };
 
 export const httpGetAllFamilyMembersHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     const { familyId } = req.params;
-    const family = await Family.findByPk(familyId);
+    const family = await Family.findByPk(parseInt(familyId));
 
     if (!family) {
-      res.status(404).json({ message: "Failed to retrieve families" });
+      return res.status(404).json({ message: "Failed to retrieve family" });
     }
     const familyMembers = await FamilyMember.findAll({
       where: {
-        FamilyId: familyId,
+        FamilyId: parseInt(familyId),
       },
     });
     if (!familyMembers.length) {
-      res.status(404).json({ message: "There is no family members" });
-      return;
+      return res.status(404).json({ count: familyMembers.length, message: "There is no family members" });
     } else {
-      res.status(200).json({ count: familyMembers.length, familyMembers });
+      return res.status(200).json({ count: familyMembers.length, familyMembers });
     }
   } catch (error) {
     // Handle any errors
     console.error("Error retrieving family members:", error);
-    res.status(500).json({ message: "Failed to retrieve family members" });
+    return res.status(500).json({ message: "Failed to retrieve family members" });
   }
 };
 
 export const httpEditFamilyMemberHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     // Extract the family member ID from the request parameters
     const { familyId, familyMemberId } = req.params;
@@ -177,11 +178,9 @@ export const httpEditFamilyMemberHandler = async (
     );
 
     if (updatedRowsCount === 0) {
-      // If no rows were updated, send a not found response
-      res.status(404).json({ message: "Family member not found" });
+      return res.status(404).json({ message: "Family member not found" });
     }
 
-    // Find the updated family member by ID
     const updatedFamilyMember = await FamilyMember.findOne({
       where: {
         id: familyMemberId,
@@ -189,15 +188,13 @@ export const httpEditFamilyMemberHandler = async (
       },
     });
 
-    // Send a success response
-    res.status(200).json({
+    return res.status(200).json({
       message: "Family member updated successfully",
       familyMember: updatedFamilyMember,
     });
   } catch (error) {
-    // Handle any errors
-    res.status(500).json({ message: "Failed to edit family member" });
     console.error("Error editing family member:", error);
+    return res.status(500).json({ message: "Failed to edit family member" });
   }
 };
 

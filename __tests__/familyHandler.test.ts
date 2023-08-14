@@ -11,7 +11,6 @@ import {
     httpGetFamilyHandler,
 } from "../src/controllers/family.controller";
 
-// Create an instance of supertest for testing the HTTP requests
 const request = supertest(app);
 
 beforeAll(async () => {
@@ -50,22 +49,18 @@ describe("httpAddFamilyHandler", () => {
     });
 
     it("should return 500 and an error message when an error occurs in the handler", async () => {
-        // Mock the request and response objects to simulate an error
         const mockReq = {
-            body: {}, // Empty body to trigger an error
+            body: {},
         } as Request;
         const mockRes = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
         } as unknown as Response;
 
-        // Call the handler with the mock request and response objects
         await httpAddFamilyHandler(mockReq, mockRes);
 
-        // Expect a 500 status code
         expect(mockRes.status).toHaveBeenCalledWith(500);
 
-        // Expect the response to contain the "Failed to add family" message
         expect(mockRes.json).toHaveBeenCalledWith({
             message: "Failed to add family",
         });
@@ -74,7 +69,6 @@ describe("httpAddFamilyHandler", () => {
 
 describe("httpGetFamilyHandler", () => {
     it("should return a family when a valid family ID is provided", async () => {
-        // Create a mock request body with family data and members
         const mockRequestBody = {
             id: 2,
             personCharge: 1,
@@ -88,7 +82,6 @@ describe("httpGetFamilyHandler", () => {
             members: [],
         };
 
-        // Make a request to the endpoint with the mock request body
         await request.post("/api/family").send(mockRequestBody);
 
         const testFamilyId = mockRequestBody.id;
@@ -101,31 +94,24 @@ describe("httpGetFamilyHandler", () => {
     });
 
     it("should return 404 when an invalid family ID is provided", async () => {
-        // Make a request to the endpoint with an invalid family ID
         const response = await request.get("/api/family/22");
 
-        // Expect a 404 status code
         expect(response.status).toBe(404);
 
-        // Expect the response to contain the "Family not found" message
         expect(response.body.message).toBe("Family not found");
     });
 
     it("should return 500 and an error message when an error occurs in the handler", async () => {
-        // Mock the request and response objects to simulate an error
         const mockReq = {} as Request;
         const mockRes = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
         } as unknown as Response;
 
-        // Call the handler with the mock request and response objects
         await httpGetFamilyHandler(mockReq, mockRes);
 
-        // Expect a 500 status code
         expect(mockRes.status).toHaveBeenCalledWith(500);
 
-        // Expect the response to contain the "Failed to retrieve family" message
         expect(mockRes.json).toHaveBeenCalledWith({
             message: "Failed to retrieve family",
         });
@@ -186,8 +172,7 @@ describe("httpEditFamilyHandler", () => {
             json: jest.fn(),
         } as unknown as Response;
 
-        // Force an error in the handler by modifying the update function of Family model
-        // Replace 'update' with the actual Sequelize method name for updating records
+
         jest.spyOn(Family, "update").mockRejectedValue(new Error("Test error"));
 
         await httpEditFamilyHandler(mockReq, mockRes);
@@ -237,28 +222,25 @@ describe("httpDeleteFamilyHandler", () => {
     });
     //TODO: fix it not working
     // it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
-    //   const mockReq = {
-    //     params: { familyId: 1 },
-    //   } as unknown as Request;
-    //   const mockRes = {
-    //     status: jest.fn().mockReturnThis(),
-    //     json: jest.fn(),
-    //   } as unknown as Response;
-    //   jest
-    //     .spyOn(Family, "destroy")
-    //     .mockRejectedValue(new Error("Internal server error"));
+    //     const mockReq = {} as Request;
+    //     const mockRes = {
+    //         status: jest.fn().mockReturnThis(),
+    //         json: jest.fn(),
+    //     } as unknown as Response;
 
-    //   await httpDeleteFamilyHandler(mockReq, mockRes);
+    //     jest.spyOn(Family, "destroy").mockRejectedValue(new Error("Test error"));
 
-    //   expect(mockRes.status).toHaveBeenCalledWith(500);
+    //     await httpDeleteFamilyHandler(mockReq, mockRes);
 
-    //   expect(mockRes.json).toHaveBeenCalledWith({
-    //     message: "Internal server error",
-    //   });
+    //     expect(mockRes.status).toHaveBeenCalledWith(500);
+
+    //     expect(mockRes.json).toHaveBeenCalledWith({
+    //         message: "Internal server error",
+    //     });
     // });
 });
 
-//TODO: fix if put above some tests will fail
+// TODO: fix if put above some tests will fail
 describe("httpGetAllFamiliesHandler", () => {
     it("should return all Families when a valid request is provided", async () => {
         const response = await request.get(`/api/family`);
@@ -282,14 +264,11 @@ describe("httpGetAllFamiliesHandler", () => {
         expect(response.status).toBe(404);
     });
     it("should return 500 and an error message when an error occurs in the handler", async () => {
-        // Mock the request and response objects to simulate an error
         const mockReq = {} as Request;
         const mockRes = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
         } as unknown as Response;
-        // Force an error in the handler by modifying the findAll function of Family model
-        // Replace 'findAll' with the actual Sequelize method name for retrieving all records
         jest.spyOn(Family, "findAll").mockRejectedValue(new Error("Test error"));
         await httpGetAllFamiliesHandler(mockReq, mockRes);
         expect(mockRes.status).toHaveBeenCalledWith(500);

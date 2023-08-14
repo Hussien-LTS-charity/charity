@@ -6,7 +6,7 @@ import FamilyMember from "../../models/FamilyMember";
 export const httpAddFamilyHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     // Extract the family data from the request body
     const {
@@ -84,19 +84,17 @@ export const httpAddFamilyHandler = async (
   } catch (error) {
     // Handle any errors
     console.error("Error adding family:", error);
-    res.status(500).json({ message: "Failed to add family" });
+    return res.status(500).json({ message: "Failed to add family" });
   }
 };
 
 export const httpGetFamilyHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // Extract the family ID from the request parameters
     const { familyId } = req.params;
 
-    // Find the family by ID
     const family = await Family.findByPk(familyId, {
       include: {
         model: FamilyMember,
@@ -104,37 +102,37 @@ export const httpGetFamilyHandler = async (
       },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
+    if (!family) {
+      return res.status(404).json({ message: "Family not found" })
+    } else {
+      return res.status(200).json({ family });
+    }
 
-    !family
-      ? // If family is not found, send a not found response
-        res.status(404).json({ message: "Family not found" })
-      : // If family is found, send the family object in the response
-        res.status(200).json({ family });
+
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving family:", error);
-    res.status(500).json({ message: "Failed to retrieve family" });
+    return res.status(500).json({ message: "Failed to retrieve family" });
   }
 };
 
 export const httpGetAllFamiliesHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     const families = await Family.findAll();
 
-    res.status(200).json({ count: families.length, families });
+    return res.status(200).json({ count: families.length, families });
   } catch (error) {
     console.error("Error retrieving families:", error);
-    res.status(500).json({ message: "Failed to retrieve families" });
+    return res.status(500).json({ message: "Failed to retrieve families" });
   }
 };
 
 export const httpEditFamilyHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     // Extract the family ID from the request parameters
     const { familyId } = req.params;
@@ -170,8 +168,7 @@ export const httpEditFamilyHandler = async (
 
     if (updatedRowsCount === 0) {
       // If no rows were updated, send a not found response
-      res.status(404).json({ message: "Family not found" });
-      return;
+      return res.status(404).json({ message: "Family not found" });
     }
 
     // Find the updated family by ID
@@ -184,15 +181,16 @@ export const httpEditFamilyHandler = async (
   } catch (error) {
     // Handle any errors
     console.error("Error editing family:", error);
-    res.status(500).json({ message: "Failed to edit family" });
+    return res.status(500).json({ message: "Failed to edit family" });
   }
 };
 
 //TODO:prevent the delete family member if there is any Family Member
 export const httpDeleteFamilyHandler = async (req: Request, res: Response) => {
-  const { familyId } = req.params;
-
   try {
+    const { familyId } = req.params;
+
+
     const deletedFamilyCount = await Family.destroy({
       where: { id: familyId },
     });
