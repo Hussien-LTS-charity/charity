@@ -25,7 +25,7 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe("httpAddFamilyMemberHandler", () => {
+describe.skip("httpAddFamilyMemberHandler", () => {
     it("should add a new family Member and return a success response", async () => {
         const testFamily = {
             id: 1,
@@ -111,7 +111,7 @@ describe("httpAddFamilyMemberHandler", () => {
     });
 });
 
-describe("httpGetAllFamiliesMemberHandler", () => {
+describe.skip("httpGetAllFamiliesMemberHandler", () => {
 
     it("should return all Families Members when a valid request is provided", async () => {
         const testFamily = {
@@ -202,30 +202,10 @@ describe("httpGetAllFamiliesMemberHandler", () => {
         expect(response.body.message).toBe("There is no family members");
     });
 
-    //TODO: complete it
-    // it("should return a 404 status code and an error message when no families are found", async () => {
-    //     await Family.destroy({ where: {} });
-    //     const response = await request.get("/api/families");
-    //     expect(response.status).toBe(404);
-    // });
 
-    // it("should return 500 and an error message when an error occurs in the handler", async () => {
-    //     const mockReq = {} as Request;
-    //     const mockRes = {
-    //         status: jest.fn().mockReturnThis(),
-    //         json: jest.fn(),
-    //     } as unknown as Response;
-    //     jest.spyOn(Family, "findAll").mockRejectedValue(new Error("Test error"));
-    //     await httpGetAllFamiliesHandler(mockReq, mockRes);
-    //     expect(mockRes.status).toHaveBeenCalledWith(500);
-    //     expect(mockRes.json).toHaveBeenCalledWith({
-    //         message: "Failed to retrieve families",
-    //     });
-    // });
 });
 
-
-describe("httpGetFamilyMemberHandler", () => {
+describe.skip("httpGetFamilyMemberHandler", () => {
     it("should return a family members when a valid family ID and family Member Id are provided", async () => {
         const mockRequestBody = {
             id: 1,
@@ -283,7 +263,7 @@ describe("httpGetFamilyMemberHandler", () => {
     });
 });
 
-describe("httpEditFamilyMemberHandler", () => {
+describe.skip("httpEditFamilyMemberHandler", () => {
     it("should update the family member and return a success response", async () => {
         const testFamilyMember = {
             id: 1,

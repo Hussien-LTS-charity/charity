@@ -16,7 +16,7 @@ export const httpAddFamilyMemberHandler = async (
         message: "Failed to retrieve Family"
       });
     }
-    // Extract the Family Member data from the request body
+
     const {
       id,
       FamilyId,
@@ -35,7 +35,6 @@ export const httpAddFamilyMemberHandler = async (
       educationLevel,
     } = req.body;
 
-    // Create a new Family Member instance
     const newFamilyMemberData: FamilyMemberAttributes = {
       id,
       FamilyId,
@@ -54,7 +53,7 @@ export const httpAddFamilyMemberHandler = async (
       educationLevel,
     };
     const newFamilyMember = await FamilyMember.create(newFamilyMemberData);
-    // Send a success response
+
     return res.status(201).json({
       message: "Family Member added successfully",
       FamilyMember: newFamilyMember,

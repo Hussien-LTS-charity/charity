@@ -18,5 +18,5 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/family", familyRouter);
 app.use("/api/family-member", familyMemberRouter);
 app.use("/api/health-history/:familyId", healthHistoryRouter);
-app.use("/api/member-needs/:familyId", memberNeedsRouter);
+app.use("/api/member-needs", memberNeedsRouter);
 app.use("/api/donor/", donorRouter);

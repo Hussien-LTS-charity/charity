@@ -7,7 +7,7 @@ import MemberNeeds from "../../models/MemberNeeds";
 export const httpAddMemberNeedsHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     const { familyId, familyMemberId } = req.params;
 
@@ -15,6 +15,23 @@ export const httpAddMemberNeedsHandler = async (
 
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
+    const family = await Family.findByPk(parsedFamilyId)
+
+    if (!family) {
+
+      return res.status(404).json({
+        message: "Failed to retrieve Family"
+      });
+    }
+
+    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId)
+    if (!familyMember) {
+
+      return res.status(404).json({
+        message: "Failed to retrieve family Member"
+      });
+    }
+
 
     const newMemberNeedsData: MemberNeedsAttributes = {
       id,
@@ -26,42 +43,60 @@ export const httpAddMemberNeedsHandler = async (
 
     const newMemberNeeds = await MemberNeeds.create(newMemberNeedsData);
 
-    res.status(201).json({
-      message: "Member Needs added successfully",
+    return res.status(201).json({
+      message: "Member Need added successfully",
       memberNeeds: newMemberNeeds,
     });
   } catch (error) {
     console.error("Error adding Member Needs:", error);
-    res.status(500).json({ message: "Failed to add Member Needs" });
+    return res.status(500).json({ message: "Failed to add Member Needs" });
   }
 };
 
 export const httpGetSpecificMemberNeedsHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
     const { familyId, familyMemberId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
+    const parsedFamilyMemberId = parseInt(familyMemberId, 10);
+    const family = await Family.findByPk(parsedFamilyId)
+    console.log("-================================", req.params);
+
+    if (!family) {
+      return res.status(404).json({
+        message: "Failed to retrieve Family"
+      });
+    }
+
+    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId)
+    if (!familyMember) {
+      return res.status(404).json({
+        message: "Failed to retrieve family Member"
+      });
+    }
 
     const memberNeeds = await FamilyMember.findOne({
       where: {
-        id: familyMemberId,
-        FamilyId: familyId,
+        id: parsedFamilyMemberId,
+        FamilyId: parsedFamilyId,
       },
       include: {
         model: MemberNeeds,
         as: "MemberNeeds",
       },
     });
+    if (!memberNeeds) {
+      console.log("-================================");
+      return res.status(404).json({ message: "member Needs not found" })
+    } else {
+      return res.status(200).json({ memberNeeds });
+    }
 
-    !memberNeeds
-      ?
-      res.status(404).json({ message: "member Needs not found" })
-      :
-      res.status(200).json({ memberNeeds });
   } catch (error) {
     console.error("Error retrieving member Needs:", error);
-    res.status(500).json({ message: "Failed to retrieve memberNeeds" });
+    return res.status(500).json({ message: "Failed to retrieve member Needs" });
   }
 };
 
@@ -90,8 +125,11 @@ export const httpGetAllMembersNeedsHandler = async (
       return;
     } else {
       res
-        .status(200)
-        .json({ count: familyMembersNeeds.length, familyMembersNeeds });
+        .status(201)
+        .json({
+          count: familyMembersNeeds.length,
+          familyMembersNeeds
+        });
     }
   } catch (error) {
     console.error("Error retrieving family members Needs:", error);
