@@ -56,19 +56,16 @@ export const httpGetDonorHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Extract the Donor ID from the request parameters
-    const { DonorId } = req.params;
+    const { donorId } = req.params;
+    const parseDDonorId = parseInt(donorId, 10)
+    const donor = await Donor.findByPk(parseDDonorId, {});
 
-    // Find the Donor by ID
-    const donor = await Donor.findByPk(DonorId, {});
-
-    !Donor
-      ? // If Donor is not found, send a not found response
-        res.status(404).json({ message: "Donor not found" })
-      : // If Donor is found, send the Donor object in the response
-        res.status(200).json({ donor });
+    !donor
+      ?
+      res.status(404).json({ message: "Donor not found" })
+      :
+      res.status(200).json({ donor });
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving Donor:", error);
     res.status(500).json({ message: "Failed to retrieve Donor" });
   }
@@ -79,13 +76,10 @@ export const httpGetAllDonorsHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Retrieve all Donors from the database
-    const Donors = await Donor.findAll();
+    const donors = await Donor.findAll();
 
-    // Send the Donors array in the response
-    res.status(200).json({ count: Donors.length, Donors });
+    res.status(200).json({ count: donors.length, donors });
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving Donors:", error);
     res.status(500).json({ message: "Failed to retrieve Donors" });
   }
@@ -96,10 +90,10 @@ export const httpEditDonorHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Extract the Donor ID from the request parameters
-    const { DonorId } = req.params;
+    const { donorId } = req.params;
 
-    // Update the Donor attributes
+    const parsedDonorId = parseInt(donorId, 10)
+
     const {
       id,
       idCopy,
@@ -131,24 +125,20 @@ export const httpEditDonorHandler = async (
     };
 
     const [updatedRowsCount] = await Donor.update(updatedDonorData, {
-      where: { id: DonorId },
+      where: { id: parsedDonorId },
     });
 
     if (updatedRowsCount === 0) {
-      // If no rows were updated, send a not found response
       res.status(404).json({ message: "Donor not found" });
       return;
     }
 
-    // Find the updated Donor by ID
-    const updatedDonor = await Donor.findByPk(DonorId);
+    const updatedDonor = await Donor.findByPk(parsedDonorId);
 
-    // Send a success response
     res
       .status(200)
-      .json({ message: "Donor updated successfully", Donor: updatedDonor });
+      .json({ message: "Donor updated successfully", donor: updatedDonor });
   } catch (error) {
-    // Handle any errors
     console.error("Error editing Donor:", error);
     res.status(500).json({ message: "Failed to edit Donor" });
   }
@@ -156,11 +146,11 @@ export const httpEditDonorHandler = async (
 
 //TODO:prevent the delete Donor member if there is any donations
 export const httpDeleteDonorHandler = async (req: Request, res: Response) => {
-  const { DonorId } = req.params;
+  const { donorId } = req.params;
 
   try {
     const deletedDonorCount = await Donor.destroy({
-      where: { id: DonorId },
+      where: { id: donorId },
     });
 
     if (deletedDonorCount === 0) {

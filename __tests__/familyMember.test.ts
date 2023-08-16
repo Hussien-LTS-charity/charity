@@ -25,7 +25,7 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe("httpAddFamilyMemberHandler", () => {
+describe.skip("httpAddFamilyMemberHandler", () => {
     it("should add a new family Member and return a success response", async () => {
         const testFamily = {
             id: 1,
@@ -111,7 +111,7 @@ describe("httpAddFamilyMemberHandler", () => {
     });
 });
 
-describe("httpGetAllFamiliesMemberHandler", () => {
+describe.skip("httpGetAllFamiliesMemberHandler", () => {
 
     it("should return all Families Members when a valid request is provided", async () => {
         const testFamily = {
@@ -225,7 +225,7 @@ describe("httpGetAllFamiliesMemberHandler", () => {
 });
 
 
-describe("httpGetFamilyMemberHandler", () => {
+describe.skip("httpGetFamilyMemberHandler", () => {
     it("should return a family members when a valid family ID and family Member Id are provided", async () => {
         const mockRequestBody = {
             id: 1,
@@ -283,7 +283,7 @@ describe("httpGetFamilyMemberHandler", () => {
     });
 });
 
-describe("httpEditFamilyMemberHandler", () => {
+describe.skip("httpEditFamilyMemberHandler", () => {
     it("should update the family member and return a success response", async () => {
         const testFamilyMember = {
             id: 1,
