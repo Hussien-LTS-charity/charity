@@ -16,10 +16,9 @@ export const httpAddMemberNeedsHandler = async (
 
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
+
     const family = await Family.findByPk(parsedFamilyId)
-
     if (!family) {
-
       return res.status(404).json({
         message: "Failed to retrieve Family"
       });
@@ -142,13 +141,11 @@ export const httpEditMemberNeedsHandler = async (
   res: Response
 ) => {
   try {
-    const { familyId, familyMemberId } = req.params;
-
+    const { familyId, familyMemberId, memberNeedId } = req.params;
     const { id, needName, MemberPriority } = req.body;
-
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
-
+    const parsedMemberNeedId = parseInt(memberNeedId, 10);
     const updatedFamilyMemberNeedsData: MemberNeedsAttributes = {
       id,
       FamilyId: parsedFamilyId,
@@ -156,13 +153,15 @@ export const httpEditMemberNeedsHandler = async (
       needName,
       MemberPriority,
     };
+    //TODO: should I add check for familyId and familyMemberId if exist???
 
     const [updatedRowsCount] = await MemberNeeds.update(
       updatedFamilyMemberNeedsData,
       {
         where: {
-          id: familyMemberId,
-          FamilyId: familyId,
+          id: parsedMemberNeedId,
+          FamilyId: parsedFamilyId,
+          familyMemberId: parsedFamilyMemberId,
         },
       }
     );
@@ -173,18 +172,18 @@ export const httpEditMemberNeedsHandler = async (
 
     const updatedFamilyMemberNeeds = await FamilyMember.findOne({
       where: {
-        id: familyMemberId,
-        FamilyId: familyId,
+        id: parsedFamilyMemberId,
+        FamilyId: parsedFamilyId,
       },
       include: {
         model: MemberNeeds,
-        as: "MemberNeeds",
+        as: "memberNeeds",
       },
     });
 
     return res.status(200).json({
       message: "Family member Needs updated successfully",
-      familyMember: updatedFamilyMemberNeeds,
+      memberNeeds: updatedFamilyMemberNeeds,
     });
   } catch (error) {
     console.error("Error editing family member Needs:", error);
@@ -196,17 +195,18 @@ export const httpDeleteMemberNeedsHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { familyId, familyMemberId } = req.params;
+  const { familyId, familyMemberId, memberNeedId } = req.params;
 
   try {
     const deletedFamilyMemberNeedsCount = await MemberNeeds.destroy({
       where: {
-        id: familyMemberId,
+        id: memberNeedId,
+        familyMemberId: familyMemberId,
         FamilyId: familyId,
       },
     });
 
-    if (!deletedFamilyMemberNeedsCount) {
+    if (deletedFamilyMemberNeedsCount) {
       return res
         .status(200)
         .json({ message: "Family member Needs deleted successfully" });

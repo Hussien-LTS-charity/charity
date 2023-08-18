@@ -126,10 +126,8 @@ export const httpEditFamilyMemberHandler = async (
   res: Response
 ) => {
   try {
-    // Extract the family member ID from the request parameters
     const { familyId, familyMemberId } = req.params;
 
-    // Update the family member attributes
     const {
       id,
       FamilyId,

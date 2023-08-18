@@ -5,9 +5,8 @@ import Donor from "../../models/Donor";
 export const httpAddDonorHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // Extract the Donor data from the request body
     const {
       id,
       idCopy,
@@ -23,7 +22,6 @@ export const httpAddDonorHandler = async (
       donorCategory,
     } = req.body;
 
-    // Create a new Donor instance
     const newDonorData: DonorAttributes = {
       id,
       idCopy,
@@ -40,14 +38,12 @@ export const httpAddDonorHandler = async (
     };
     const newDonor = await Donor.create(newDonorData);
 
-    // Send a success response
-    res
+    return res
       .status(201)
       .json({ message: "Donor added successfully", Donor: newDonor });
   } catch (error) {
-    // Handle any errors
     console.error("Error adding Donor:", error);
-    res.status(500).json({ message: "Failed to add Donor" });
+    return res.status(500).json({ message: "Failed to add Donor" });
   }
 };
 
@@ -57,8 +53,8 @@ export const httpGetDonorHandler = async (
 ): Promise<void> => {
   try {
     const { donorId } = req.params;
-    const parseDDonorId = parseInt(donorId, 10)
-    const donor = await Donor.findByPk(parseDDonorId, {});
+    const parsedDonorId = parseInt(donorId, 10)
+    const donor = await Donor.findByPk(parsedDonorId, {});
 
     !donor
       ?
@@ -147,10 +143,11 @@ export const httpEditDonorHandler = async (
 //TODO:prevent the delete Donor member if there is any donations
 export const httpDeleteDonorHandler = async (req: Request, res: Response) => {
   const { donorId } = req.params;
+  const parsedDonorId = parseInt(donorId, 10)
 
   try {
     const deletedDonorCount = await Donor.destroy({
-      where: { id: donorId },
+      where: { id: parsedDonorId },
     });
 
     if (deletedDonorCount === 0) {

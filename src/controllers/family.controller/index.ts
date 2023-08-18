@@ -8,7 +8,6 @@ export const httpAddFamilyHandler = async (
   res: Response
 ) => {
   try {
-    // Extract the family data from the request body
     const {
       id,
       personCharge,
@@ -22,7 +21,6 @@ export const httpAddFamilyHandler = async (
       members,
     } = req.body;
 
-    // Create a new family instance
     const newFamilyData: FamilyAttributes = {
       id,
       personCharge,
@@ -36,7 +34,6 @@ export const httpAddFamilyHandler = async (
     };
     const newFamily = await Family.create(newFamilyData);
 
-    // Add the family members
     await Promise.all(
       members.map(async (member: FamilyMember) => {
         const {
@@ -55,7 +52,6 @@ export const httpAddFamilyHandler = async (
           educationLevel,
         } = member;
 
-        // Create a new family member instance and associate it with the family
         const newMemberData = {
           id,
           FamilyId: newFamily.id,
@@ -77,12 +73,10 @@ export const httpAddFamilyHandler = async (
       })
     );
 
-    // Send a success response
     res
       .status(201)
       .json({ message: "Family added successfully", family: newFamily });
   } catch (error) {
-    // Handle any errors
     console.error("Error adding family:", error);
     return res.status(500).json({ message: "Failed to add family" });
   }
@@ -121,8 +115,12 @@ export const httpGetAllFamiliesHandler = async (
 ) => {
   try {
     const families = await Family.findAll();
+    if (!families.length) {
+      return res.status(404).json({ message: "There are no families" });
+    } else {
+      return res.status(200).json({ count: families.length, families });
+    }
 
-    return res.status(200).json({ count: families.length, families });
   } catch (error) {
     console.error("Error retrieving families:", error);
     return res.status(500).json({ message: "Failed to retrieve families" });
@@ -134,10 +132,8 @@ export const httpEditFamilyHandler = async (
   res: Response
 ) => {
   try {
-    // Extract the family ID from the request parameters
     const { familyId } = req.params;
 
-    // Update the family attributes
     const {
       id,
       personCharge,
@@ -167,19 +163,15 @@ export const httpEditFamilyHandler = async (
     });
 
     if (updatedRowsCount === 0) {
-      // If no rows were updated, send a not found response
       return res.status(404).json({ message: "Family not found" });
     }
 
-    // Find the updated family by ID
     const updatedFamily = await Family.findByPk(familyId);
 
-    // Send a success response
     res
       .status(200)
       .json({ message: "Family updated successfully", family: updatedFamily });
   } catch (error) {
-    // Handle any errors
     console.error("Error editing family:", error);
     return res.status(500).json({ message: "Failed to edit family" });
   }
@@ -189,10 +181,10 @@ export const httpEditFamilyHandler = async (
 export const httpDeleteFamilyHandler = async (req: Request, res: Response) => {
   try {
     const { familyId } = req.params;
-
+    const parsedFamilyId = parseInt(familyId, 10);
 
     const deletedFamilyCount = await Family.destroy({
-      where: { id: familyId },
+      where: { id: parsedFamilyId },
     });
 
     if (deletedFamilyCount === 0) {

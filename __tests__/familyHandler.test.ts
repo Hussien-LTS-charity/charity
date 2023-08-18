@@ -13,37 +13,38 @@ import {
 
 const request = supertest(app);
 
+const mockRequestBody = {
+    id: 1,
+    personCharge: 1,
+    familyPriority: 1,
+    email: "test@tesst.com",
+    address: "string",
+    contactNumber: "0788888888",
+    houseCondition: "string",
+    notes: "string",
+    familyCategory: "orphans",
+    members: [],
+};
+
+const updatedMockRequestBody = {
+    address: "address",
+};
+
 beforeAll(async () => {
     await sequelize.sync();
+    await Family.destroy({ where: {} });
 });
 
 afterAll(async () => {
     await sequelize.close();
 });
 
-afterEach(async () => {
-    await Family.destroy({ where: {} });
-});
 
-describe.skip("httpAddFamilyHandler", () => {
+describe("httpAddFamilyHandler", () => {
     it("should add a new family and return a success response", async () => {
-        const mockRequestBody = {
-            id: 1,
-            personCharge: 1,
-            familyPriority: 1,
-            email: "test@tesst.com",
-            address: "string",
-            contactNumber: "0788888888",
-            houseCondition: "string",
-            notes: "string",
-            familyCategory: "orphans",
-            members: [],
-        };
-
         const response = await request.post("/api/family").send(mockRequestBody);
 
         expect(response.status).toBe(201);
-
         expect(response.body.message).toBe("Family added successfully");
         expect(response.body.family).toBeDefined();
     });
@@ -60,36 +61,21 @@ describe.skip("httpAddFamilyHandler", () => {
         await httpAddFamilyHandler(mockReq, mockRes);
 
         expect(mockRes.status).toHaveBeenCalledWith(500);
-
         expect(mockRes.json).toHaveBeenCalledWith({
             message: "Failed to add family",
         });
     });
 });
 
-describe.skip("httpGetFamilyHandler", () => {
+describe("httpGetFamilyHandler", () => {
     it("should return a family when a valid family ID is provided", async () => {
-        const mockRequestBody = {
-            id: 2,
-            personCharge: 1,
-            familyPriority: 1,
-            email: "test@tesst.com",
-            address: "string",
-            contactNumber: "0788888888",
-            houseCondition: "string",
-            notes: "string",
-            familyCategory: "orphans",
-            members: [],
-        };
-
+        await Family.destroy({ where: {} });
         await request.post("/api/family").send(mockRequestBody);
 
         const testFamilyId = mockRequestBody.id;
-
         const response = await request.get(`/api/family/${testFamilyId}`);
 
         expect(response.status).toBe(200);
-
         expect(response.body.family).toBeDefined();
     });
 
@@ -97,7 +83,6 @@ describe.skip("httpGetFamilyHandler", () => {
         const response = await request.get("/api/family/22");
 
         expect(response.status).toBe(404);
-
         expect(response.body.message).toBe("Family not found");
     });
 
@@ -111,57 +96,35 @@ describe.skip("httpGetFamilyHandler", () => {
         await httpGetFamilyHandler(mockReq, mockRes);
 
         expect(mockRes.status).toHaveBeenCalledWith(500);
-
         expect(mockRes.json).toHaveBeenCalledWith({
             message: "Failed to retrieve family",
         });
     });
 });
 
-describe.skip("httpEditFamilyHandler", () => {
+describe("httpEditFamilyHandler", () => {
     it("should update the family and return a success response", async () => {
-        const testFamily = {
-            id: 1,
-            personCharge: 1,
-            familyPriority: 1,
-            email: "test3@tesst.com",
-            address: "string",
-            contactNumber: "07888888488",
-            houseCondition: "string",
-            notes: "string",
-            familyCategory: "orphans",
-            members: [],
-        };
-        await request.post("/api/family").send(testFamily);
-        const mockRequestBody = {
-            address: "address",
-        };
+        await request.post("/api/family").send(mockRequestBody);
 
         const response = await request
-            .put(`/api/family/${testFamily.id}`)
-            .send(mockRequestBody);
+            .put(`/api/family/${mockRequestBody.id}`)
+            .send(updatedMockRequestBody);
 
         expect(response.status).toBe(200);
-
         expect(response.body.message).toBe("Family updated successfully");
 
         const updatedFamily = await Family.findByPk(53);
         if (updatedFamily) {
             expect(response.body.family).toBeDefined();
-            expect(updatedFamily.id).toBe(testFamily.id);
+            expect(updatedFamily.id).toBe(mockRequestBody.id);
             expect(updatedFamily.address).toBe(mockRequestBody.address);
         }
     });
 
     it("should return a 404 status code when the family to update is not found", async () => {
-        const mockRequestBody = {
-            address: "address",
-        };
-
-        const response = await request.put("/api/family/22").send(mockRequestBody);
+        const response = await request.put("/api/family/22").send(updatedMockRequestBody);
 
         expect(response.status).toBe(404);
-
         expect(response.body.message).toBe("Family not found");
     });
 
@@ -178,102 +141,101 @@ describe.skip("httpEditFamilyHandler", () => {
         await httpEditFamilyHandler(mockReq, mockRes);
 
         expect(mockRes.status).toHaveBeenCalledWith(500);
-
         expect(mockRes.json).toHaveBeenCalledWith({
             message: "Failed to edit family",
         });
     });
 });
 
-describe.skip("httpDeleteFamilyHandler", () => {
-    it("should delete the family and return a success response", async () => {
-        const testFamily = {
-            id: 1,
-            personCharge: 1,
-            familyPriority: 1,
-            email: "test3@tesst.com",
-            address: "string",
-            contactNumber: "07888888488",
-            houseCondition: "string",
-            notes: "string",
-            familyCategory: "orphans",
-            members: [],
-        };
-        await request.post("/api/family").send(testFamily);
-        const testFamilyId = testFamily.id;
+describe("httpGetAllFamiliesHandler", () => {
+    it("should return all Families when a valid request is provided", async () => {
+        await request.post("/api/family").send(mockRequestBody);
 
-        const response = await request.delete(`/api/family/${testFamilyId}`);
+        const response = await request.get(`/api/family`);
 
         expect(response.status).toBe(200);
+        expect(response.body.count).toBeDefined();
+        expect(response.body.families).toBeDefined();
+        expect(Array.isArray(response.body.families)).toBe(true);
 
-        expect(response.body.message).toBe("Family deleted successfully");
-
-        const deletedFamily = await Family.findByPk(testFamilyId);
-        expect(deletedFamily).toBeNull();
-        expect(response.body.message).toBe("Family deleted successfully");
+        const allFamilies = await Family.findAll();
+        expect(response.body.count).toBe(allFamilies.length);
     });
 
-    it("should return a 404 status code when the family to delete is not found", async () => {
-        const response = await request.delete("/api/family/66");
+    it("should return an empty response if there are no Families", async () => {
+        await Family.destroy({ where: {} });
+
+        const response = await request.get(`/api/family`);
 
         expect(response.status).toBe(404);
-
-        expect(response.body.message).toBe("Family not found");
+        expect(response.body.count).toBeUndefined();
+        expect(response.body.families).toBeUndefined();
+        expect(response.body.message).toBe("There are no families");
     });
-    //TODO: fix it not working
-    // it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
-    //     const mockReq = {} as Request;
+
+    it("should return a 404 status code and an error message when no families are found", async () => {
+        const response = await request.get("/api/family");
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("There are no families");
+    });
+
+    // TODO: makes other tests fail
+    // it("should return 500 and an error message when an error occurs in the handler", async () => {
+    //     const mockReq = {} as unknown as Partial<Request>;
     //     const mockRes = {
     //         status: jest.fn().mockReturnThis(),
     //         json: jest.fn(),
     //     } as unknown as Response;
 
-    //     jest.spyOn(Family, "destroy").mockRejectedValue(new Error("Test error"));
+    //     jest.spyOn(Family, "findAll").mockRejectedValue(new Error("Test error"));
 
-    //     await httpDeleteFamilyHandler(mockReq, mockRes);
+    //     await httpGetAllFamiliesHandler(mockReq as Request, mockRes);
 
     //     expect(mockRes.status).toHaveBeenCalledWith(500);
-
     //     expect(mockRes.json).toHaveBeenCalledWith({
-    //         message: "Internal server error",
+    //         message: "Failed to retrieve families",
     //     });
     // });
 });
 
-// TODO: fix if put above some tests will fail
-describe.skip("httpGetAllFamiliesHandler", () => {
-    it("should return all Families when a valid request is provided", async () => {
-        const response = await request.get(`/api/family`);
+describe("httpDeleteFamilyHandler", () => {
+    it("should delete the family and return a success response", async () => {
+        await request.post("/api/family").send(mockRequestBody);
+        const response = await request.delete(`/api/family/${mockRequestBody.id}`);
+
         expect(response.status).toBe(200);
-        expect(response.body.count).toBeDefined();
-        expect(response.body.families).toBeDefined();
-        expect(Array.isArray(response.body.families)).toBe(true);
-        const allFamilies = await Family.findAll();
-        expect(response.body.count).toBe(allFamilies.length);
+        expect(response.body.message).toBe("Family deleted successfully");
+
+        const deletedFamily = await Family.findByPk(mockRequestBody.id);
+        expect(deletedFamily).toBeNull();
+        expect(response.body.message).toBe("Family deleted successfully");
+
     });
-    it("should return an empty response if there is no Families", async () => {
-        const response = await request.get(`/api/family`);
-        expect(response.status).toBe(200);
-        expect(response.body.count).toBeDefined();
-        expect(response.body.families).toBeDefined();
-        expect(response.body.count).toEqual(0);
-    });
-    it("should return a 404 status code and an error message when no families are found", async () => {
-        await Family.destroy({ where: {} });
-        const response = await request.get("/api/families");
+
+    it("should return a 404 status code when the family to delete is not found", async () => {
+        const response = await request.delete("/api/family/62326");
+
         expect(response.status).toBe(404);
+        expect(response.body.message).toBe("Family not found");
     });
-    it("should return 500 and an error message when an error occurs in the handler", async () => {
-        const mockReq = {} as Request;
+
+    it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
+        const mockReq = {
+            params: { familyId: "123" },
+        } as unknown as Partial<Request>;
         const mockRes = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
         } as unknown as Response;
-        jest.spyOn(Family, "findAll").mockRejectedValue(new Error("Test error"));
-        await httpGetAllFamiliesHandler(mockReq, mockRes);
+
+        jest.spyOn(Family, "destroy").mockRejectedValue(new Error("Test error"));
+
+        await httpDeleteFamilyHandler(mockReq as Request, mockRes);
+
         expect(mockRes.status).toHaveBeenCalledWith(500);
         expect(mockRes.json).toHaveBeenCalledWith({
-            message: "Failed to retrieve families",
+            message: "Internal server error",
         });
     });
 });
