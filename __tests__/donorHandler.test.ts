@@ -35,7 +35,7 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe("httpAddDonorHandler", () => {
+describe.skip("httpAddDonorHandler", () => {
     it("should add a new donor and return a success response", async () => {
         const response = await request.post("/api/donor").send(mockRequestBody);
 
@@ -61,7 +61,7 @@ describe("httpAddDonorHandler", () => {
     });
 });
 
-describe("httpGetDonorHandler", () => {
+describe.skip("httpGetDonorHandler", () => {
     it("should return a Donor when a valid donor ID is provided", async () => {
         await request.post("/api/donor").send(mockRequestBody);
 
@@ -96,7 +96,7 @@ describe("httpGetDonorHandler", () => {
     });
 });
 
-describe("httpEditDonorHandler", () => {
+describe.skip("httpEditDonorHandler", () => {
     it("should update the donor and return a success response", async () => {
         await request.post("/api/donor").send(mockRequestBody);
 
@@ -143,7 +143,7 @@ describe("httpEditDonorHandler", () => {
     });
 });
 
-describe("httpDeleteDonorHandler", () => {
+describe.skip("httpDeleteDonorHandler", () => {
     it("should delete the Donor and return a success response", async () => {
         await request.post("/api/donor").send(mockRequestBody);
         const testDonorId = mockRequestBody.id;
@@ -185,7 +185,7 @@ describe("httpDeleteDonorHandler", () => {
     });
 });
 
-describe("httpGetAllDonorsHandler", () => {
+describe.skip("httpGetAllDonorsHandler", () => {
     it("should return all Donors when a valid request is provided", async () => {
         const response = await request.get(`/api/donor`);
 

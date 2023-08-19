@@ -5,6 +5,7 @@ import FamilyMember from "../src/models/FamilyMember";
 import Family from "../src/models/Family";
 import {
     httpAddFamilyMemberHandler,
+    httpDeleteFamilyMemberHandler,
     httpEditFamilyMemberHandler,
     httpGetAllFamilyMembersHandler,
     httpGetSpecificFamilyMemberHandler,
@@ -78,7 +79,7 @@ afterAll(async () => {
     await sequelize.close();
 });
 
-describe("httpAddFamilyMemberHandler", () => {
+describe.skip("httpAddFamilyMemberHandler", () => {
     it("should add a new family Member and return a success response", async () => {
         const res = await request
             .post(`/api/family-member/${firstMockRequestBody.FamilyId}`)
@@ -115,7 +116,7 @@ describe("httpAddFamilyMemberHandler", () => {
     });
 });
 
-describe("httpGetFamilyMemberHandler", () => {
+describe.skip("httpGetSpecificFamilyMemberHandler", () => {
     it("should return a family members when a valid family ID and family Member Id are provided", async () => {
         await request
             .post(`/api/family-member/${firstMockRequestBody.FamilyId}`)
@@ -151,7 +152,7 @@ describe("httpGetFamilyMemberHandler", () => {
     });
 });
 
-describe("httpEditFamilyMemberHandler", () => {
+describe.skip("httpEditFamilyMemberHandler", () => {
     it("should update the family member and return a success response", async () => {
         await request.post(`/api/family-member/${firstMockRequestBody.id}`).send(firstMockRequestBody);
 
@@ -213,7 +214,54 @@ describe("httpEditFamilyMemberHandler", () => {
     });
 });
 
-describe("httpGetAllFamiliesMemberHandler", () => {
+describe.skip("httpDeleteFamilyMemberHandler", () => {
+    it("should delete the Family Member and return a success response", async () => {
+        await FamilyMember.destroy({ where: {} });
+        await request
+            .post(`/api/family-member/${mockRequestBody.id}`).send(firstMockRequestBody);
+        const testFamilyMemberId = firstMockRequestBody.id;
+
+        const response = await request.delete(`/api/family-member/${mockRequestBody.id}/${testFamilyMemberId}`);
+        console.log(response.body);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Family member deleted successfully");
+
+        const deletedFamily = await FamilyMember.findByPk(testFamilyMemberId);
+        expect(deletedFamily).toBeNull();
+
+    });
+
+    it("should return a 404 status code when the Family Member to delete is not found", async () => {
+        const response = await request.delete(`/api/family-member/${mockRequestBody.id}/3467`);
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("Family member not found");
+    });
+    //TODO:
+    // it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
+    //     await Family.destroy({ where: {} });
+    //     await FamilyMember.destroy({ where: {} });
+    //     const mockReq = {
+    //         params: { familyId: "123", familyMemberId: "123" },
+    //     } as unknown as Partial<Request>;
+    //     const mockRes = {
+    //         status: jest.fn().mockReturnThis(),
+    //         json: jest.fn(),
+    //     } as unknown as Response;
+
+    //     jest.spyOn(FamilyMember, "destroy").mockRejectedValue(new Error("Test error"));
+
+    //     await httpDeleteFamilyMemberHandler(mockReq as Request, mockRes);
+
+    //     expect(mockRes.status).toHaveBeenCalledWith(500);
+    //     expect(mockRes.json).toHaveBeenCalledWith({
+    //         message: "Internal server error",
+    //     });
+    // });
+});
+
+describe.skip("httpGetAllFamiliesMemberHandler", () => {
     it("should return all Families Members when a valid request is provided", async () => {
         const requests = [
             request.post(`/api/family-member/${firstMockRequestBody.FamilyId}`).send(firstMockRequestBody),

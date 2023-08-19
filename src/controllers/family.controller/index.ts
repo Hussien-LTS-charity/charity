@@ -33,52 +33,74 @@ export const httpAddFamilyHandler = async (
       familyCategory,
     };
     const newFamily = await Family.create(newFamilyData);
+    if (members.length) {
 
-    await Promise.all(
-      members.map(async (member: FamilyMember) => {
-        const {
-          firstName,
-          lastName,
-          gender,
-          maritalStatus,
-          address,
-          email,
-          dateOfBirth,
-          phoneNumber,
-          isWorking,
-          isPersonCharge,
-          proficient,
-          totalIncome,
-          educationLevel,
-        } = member;
+      try {
+        await Promise.all(
+          members.map(async (member: FamilyMember) => {
+            const {
+              id,
+              firstName,
+              lastName,
+              gender,
+              maritalStatus,
+              address,
+              email,
+              dateOfBirth,
+              phoneNumber,
+              isWorking,
+              isPersonCharge,
+              proficient,
+              totalIncome,
+              educationLevel,
+            } = member;
 
-        const newMemberData = {
-          id,
-          FamilyId: newFamily.id,
-          firstName,
-          lastName,
-          gender,
-          maritalStatus,
-          address,
-          email,
-          dateOfBirth,
-          phoneNumber,
-          isWorking,
-          isPersonCharge,
-          proficient,
-          totalIncome,
-          educationLevel,
-        };
-        await FamilyMember.create(newMemberData);
-      })
-    );
+            const newMemberData = {
+              id,
+              FamilyId: newFamily.id,
+              firstName,
+              lastName,
+              gender,
+              maritalStatus,
+              address,
+              email,
+              dateOfBirth,
+              phoneNumber,
+              isWorking,
+              isPersonCharge,
+              proficient,
+              totalIncome,
+              educationLevel,
+            };
+            await FamilyMember.create(newMemberData);
+          })
+        );
+        const newFamilyWithMembers = await Family.findOne({
+          where: {
+            id: newFamily.id,
+          },
+          include: {
+            model: FamilyMember,
+            as: "FamilyMember",
+          },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        });
+        return res
+          .status(201)
+          .json({ message: "Family and Family Members added successfully", family: newFamilyWithMembers });
+      } catch (error) {
+        console.error("Error adding family Member:", error);
+        return res.status(500).json({ message: "Failed to add family with members" });
+      }
+    } else {
+      return res
+        .status(201)
+        .json({ message: "Family added successfully", family: newFamily });
+    }
 
-    res
-      .status(201)
-      .json({ message: "Family added successfully", family: newFamily });
   } catch (error) {
     console.error("Error adding family:", error);
-    return res.status(500).json({ message: "Failed to add family" });
+    return res.status(500).json({ message: "Failed to add family without members" });
   }
 };
 
@@ -115,7 +137,7 @@ export const httpGetAllFamiliesHandler = async (
 ) => {
   try {
     const families = await Family.findAll();
-    if (!families.length) {
+    if (families.length === 0) {
       return res.status(404).json({ message: "There are no families" });
     } else {
       return res.status(200).json({ count: families.length, families });

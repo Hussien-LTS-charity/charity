@@ -9,7 +9,8 @@ export const httpAddFamilyMemberHandler = async (
 ) => {
   try {
     const { familyId } = req.params
-    const family = await Family.findByPk(familyId)
+    const parsedFamilyId = parseInt(familyId, 10)
+    const family = await Family.findByPk(parsedFamilyId)
     if (!family) {
 
       return res.status(404).json({
@@ -71,11 +72,12 @@ export const httpGetSpecificFamilyMemberHandler = async (
 ) => {
   try {
     const { familyId, familyMemberId } = req.params;
-
+    const parsedFamilyId = parseInt(familyId, 10)
+    const parsedFamilyMemberId = parseInt(familyMemberId, 10)
     const familyMember = await FamilyMember.findOne({
       where: {
-        id: familyMemberId,
-        FamilyId: familyId,
+        id: parsedFamilyMemberId,
+        FamilyId: parsedFamilyId,
       },
     });
 
@@ -84,9 +86,6 @@ export const httpGetSpecificFamilyMemberHandler = async (
     } else {
       return res.status(200).json({ familyMember });
     }
-
-
-
   } catch (error) {
     console.error("Error retrieving family member:", error);
     return res.status(500).json({ message: "Failed to retrieve family member" });
@@ -99,14 +98,15 @@ export const httpGetAllFamilyMembersHandler = async (
 ) => {
   try {
     const { familyId } = req.params;
-    const family = await Family.findByPk(parseInt(familyId));
+    const parsedFamilyId = parseInt(familyId, 10)
+    const family = await Family.findByPk(parsedFamilyId);
 
     if (!family) {
       return res.status(404).json({ message: "Failed to retrieve family" });
     }
     const familyMembers = await FamilyMember.findAll({
       where: {
-        FamilyId: parseInt(familyId),
+        FamilyId: parsedFamilyId,
       },
     });
     if (!familyMembers.length) {
@@ -127,7 +127,8 @@ export const httpEditFamilyMemberHandler = async (
 ) => {
   try {
     const { familyId, familyMemberId } = req.params;
-
+    const parsedFamilyId = parseInt(familyId, 10)
+    const parsedFamilyMemberId = parseInt(familyMemberId, 10)
     const {
       id,
       FamilyId,
@@ -168,8 +169,8 @@ export const httpEditFamilyMemberHandler = async (
       updatedFamilyMemberData,
       {
         where: {
-          id: familyMemberId,
-          FamilyId: familyId,
+          id: parsedFamilyMemberId,
+          FamilyId: parsedFamilyId,
         },
       }
     );
@@ -199,22 +200,26 @@ export const httpDeleteFamilyMemberHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { familyId, familyMemberId } = req.params;
+  console.log("req.params", req.params);
 
+  const { familyId, familyMemberId } = req.params;
+  const parsedFamilyId = parseInt(familyId)
+  const parsedFamilyMemberId = parseInt(familyMemberId)
   try {
     const deletedFamilyMemberCount = await FamilyMember.destroy({
       where: {
-        id: familyMemberId,
-        FamilyId: familyId,
+        id: parsedFamilyMemberId,
+        FamilyId: parsedFamilyId,
       },
     });
 
-    if (!deletedFamilyMemberCount) {
-      return res
-        .status(200)
-        .json({ message: "Family member deleted successfully" });
+    if (deletedFamilyMemberCount === 0) {
+      return res.status(404).json({ message: "Family member not found" });
     }
-    return res.status(404).json({ message: "Family member not found" });
+    return res
+      .status(200)
+      .json({ message: "Family member deleted successfully" });
+
   } catch (error) {
     console.error("Error deleting family member:", error);
     return res.status(500).json({ message: "Internal server error" });
