@@ -10,17 +10,14 @@ export const httpAddFamilyMemberHealthHistoryHandler = async (
 ): Promise<void> => {
   try {
     const { familyId, familyMemberId } = req.params;
-    // Extract the Family Member Health History data from the request body
     const {
       id,
       disease: { diseaseName, medicineName },
     } = req.body;
 
-    // Convert the id to a number
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
 
-    // Create a new Family Member instance
     const newFamilyMemberHealthHistoryData: HealthHistoryAttributes = {
       id,
       FamilyId: parsedFamilyId,
@@ -32,13 +29,11 @@ export const httpAddFamilyMemberHealthHistoryHandler = async (
       newFamilyMemberHealthHistoryData
     );
 
-    // Send a success response
     res.status(201).json({
       message: "Family Member Health History added successfully",
       family: newFamilyMemberHealthHistory,
     });
   } catch (error) {
-    // Handle any errors
     console.error("Error adding Family Member Health History:", error);
     res.status(500).json({ message: "Failed to add family Health History" });
   }
@@ -49,10 +44,8 @@ export const httpGetSpecificFamilyMemberHealthHistoryHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Extract the family member health history ID from the request parameters
     const { familyId, familyMemberId } = req.params;
 
-    // Find the family by ID
     const familyMemberHealthHistory = await FamilyMember.findOne({
       where: {
         id: familyMemberId,
@@ -65,14 +58,13 @@ export const httpGetSpecificFamilyMemberHealthHistoryHandler = async (
     });
 
     !familyMemberHealthHistory
-      ? // If family member health history is not found, send a not found response
-        res
-          .status(404)
-          .json({ message: "family member health history not found" })
-      : // If family member health history is found, send the family member object in the response
-        res.status(200).json({ familyMemberHealthHistory });
+      ?
+      res
+        .status(404)
+        .json({ message: "family member health history not found" })
+      :
+      res.status(200).json({ familyMemberHealthHistory });
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving family member health history:", error);
     res
       .status(500)
@@ -109,7 +101,6 @@ export const httpGetAllFamilyMembersHealthHistoryHandler = async (
       res.status(200).json({ count: familyMembers.length, familyMembers });
     }
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving family members health history:", error);
     res
       .status(500)
@@ -122,17 +113,14 @@ export const httpEditFamilyMemberHealthHistoryHandler = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Extract the IDs from the request parameters
     const { familyId, familyMemberId } = req.params;
 
-    // Update the family member health history attributes
     const {
       id,
 
       disease: { diseaseName, medicineName },
     } = req.body;
 
-    // Convert the id to a number
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
 
@@ -154,13 +142,11 @@ export const httpEditFamilyMemberHealthHistoryHandler = async (
     );
 
     if (updatedRowsCount === 0) {
-      // If no rows were updated, send a not found response
       res
         .status(404)
         .json({ message: "family member health history not found" });
     }
 
-    // Find the updated family member health history by ID
     const updatedFamilyMemberHealthHistory = await FamilyMember.findOne({
       where: {
         id: familyMemberId,
@@ -172,13 +158,11 @@ export const httpEditFamilyMemberHealthHistoryHandler = async (
       },
     });
 
-    // Send a success response
     res.status(200).json({
       message: "Family member health history updated successfully",
       familyMember: updatedFamilyMemberHealthHistory,
     });
   } catch (error) {
-    // Handle any errors
     console.error("Error editing family member health history:", error);
     res
       .status(500)
