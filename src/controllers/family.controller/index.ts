@@ -1,3 +1,4 @@
+//TODO: GET RED OF THE ID
 import { Request, Response } from "express";
 import { FamilyAttributes } from "../../config/types";
 import Family from "../../models/Family";
@@ -110,8 +111,9 @@ export const httpGetFamilyHandler = async (
 ) => {
   try {
     const { familyId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
 
-    const family = await Family.findByPk(familyId, {
+    const family = await Family.findByPk(parsedFamilyId, {
       include: {
         model: FamilyMember,
         as: "FamilyMember",
@@ -155,6 +157,7 @@ export const httpEditFamilyHandler = async (
 ) => {
   try {
     const { familyId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
 
     const {
       id,
@@ -181,14 +184,14 @@ export const httpEditFamilyHandler = async (
     };
 
     const [updatedRowsCount] = await Family.update(updatedFamilyData, {
-      where: { id: familyId },
+      where: { id: parsedFamilyId },
     });
 
     if (updatedRowsCount === 0) {
       return res.status(404).json({ message: "Family not found" });
     }
 
-    const updatedFamily = await Family.findByPk(familyId);
+    const updatedFamily = await Family.findByPk(parsedFamilyId);
 
     res
       .status(200)

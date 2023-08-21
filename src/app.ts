@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import familyRouter from "./routes/family.router";
 import familyMemberRouter from "./routes/familyMember.router";
-import healthHistoryRouter from "./routes/familyMemberHealthHistory.router";
+import healthHistoryRouter from "./routes/healthHistory.router";
 import memberNeedsRouter from "./routes/memberNeeds.router";
 import donorRouter from "./routes/donor.router";
 
@@ -17,6 +17,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 app.use("/api/family", familyRouter);
 app.use("/api/family-member", familyMemberRouter);
-app.use("/api/health-history/:familyId", healthHistoryRouter);
+app.use("/api/health-history", healthHistoryRouter);
 app.use("/api/member-needs", memberNeedsRouter);
 app.use("/api/donor/", donorRouter);
