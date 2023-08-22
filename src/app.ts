@@ -19,4 +19,4 @@ app.use("/api/family", familyRouter);
 app.use("/api/family-member", familyMemberRouter);
 app.use("/api/health-history", healthHistoryRouter);
 app.use("/api/member-needs", memberNeedsRouter);
-app.use("/api/donor/", donorRouter);
+app.use("/api/donor", donorRouter);
