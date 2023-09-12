@@ -9,10 +9,10 @@ import {
 
 const memberNeedsRouter: Router = express.Router();
 
-memberNeedsRouter.post("/:familyMemberId", httpAddMemberNeedsHandler);
-memberNeedsRouter.get("/:familyMemberId", httpGetSpecificMemberNeedsHandler);
-memberNeedsRouter.get("/", httpGetAllMembersNeedsHandler);
-memberNeedsRouter.put("/:familyMemberId", httpEditMemberNeedsHandler);
-memberNeedsRouter.delete("/:familyMemberId", httpDeleteMemberNeedsHandler);
+memberNeedsRouter.post("/:familyId/:familyMemberId", httpAddMemberNeedsHandler);
+memberNeedsRouter.get("/:familyId/:familyMemberId", httpGetSpecificMemberNeedsHandler);
+memberNeedsRouter.get("/:familyId", httpGetAllMembersNeedsHandler);
+memberNeedsRouter.put("/:familyId/:familyMemberId/:memberNeedId", httpEditMemberNeedsHandler);
+memberNeedsRouter.delete("/:familyId/:familyMemberId/:memberNeedId", httpDeleteMemberNeedsHandler);
 
 export default memberNeedsRouter;

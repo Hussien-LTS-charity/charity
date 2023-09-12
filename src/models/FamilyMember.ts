@@ -7,8 +7,7 @@ import { Gender, MaritalStatus } from "../config/enums";
 
 class FamilyMember
   extends Model<FamilyMemberAttributes>
-  implements FamilyMemberAttributes
-{
+  implements FamilyMemberAttributes {
   id!: number;
   FamilyId!: number;
   firstName!: string;
@@ -131,15 +130,15 @@ FamilyMember.hasMany(MemberNeeds, {
 
 MemberNeeds.belongsTo(FamilyMember, {
   foreignKey: "familyMemberId",
-  as: "familyMember",
+  as: "memberNeeds",
 });
 
 FamilyMember.hasMany(HealthHistory, {
   foreignKey: "familyMemberId",
-  as: "needs",
+  as: "healthHistory",
 });
 
-MemberNeeds.belongsTo(HealthHistory, {
+HealthHistory.belongsTo(FamilyMember, {
   foreignKey: "familyMemberId",
   as: "healthHistory",
 });

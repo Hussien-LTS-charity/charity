@@ -9,10 +9,10 @@ import {
 
 const familyMemberRouter: Router = express.Router();
 
-familyMemberRouter.post("/", httpAddFamilyMemberHandler);
-familyMemberRouter.get("/", httpGetAllFamilyMembersHandler);
-familyMemberRouter.get("/:familyMemberId", httpGetSpecificFamilyMemberHandler);
-familyMemberRouter.put("/:familyMemberId", httpEditFamilyMemberHandler);
-familyMemberRouter.delete("/:familyMemberId", httpDeleteFamilyMemberHandler);
+familyMemberRouter.post("/:familyId", httpAddFamilyMemberHandler);
+familyMemberRouter.get("/:familyId", httpGetAllFamilyMembersHandler);
+familyMemberRouter.get("/:familyId/:familyMemberId", httpGetSpecificFamilyMemberHandler);
+familyMemberRouter.put("/:familyId/:familyMemberId", httpEditFamilyMemberHandler);
+familyMemberRouter.delete("/:familyId/:familyMemberId", httpDeleteFamilyMemberHandler);
 
 export default familyMemberRouter;

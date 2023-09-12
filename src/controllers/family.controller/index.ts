@@ -1,3 +1,4 @@
+//TODO: GET RED OF THE ID
 import { Request, Response } from "express";
 import { FamilyAttributes } from "../../config/types";
 import Family from "../../models/Family";
@@ -6,9 +7,8 @@ import FamilyMember from "../../models/FamilyMember";
 export const httpAddFamilyHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // Extract the family data from the request body
     const {
       id,
       personCharge,
@@ -22,7 +22,6 @@ export const httpAddFamilyHandler = async (
       members,
     } = req.body;
 
-    // Create a new family instance
     const newFamilyData: FamilyAttributes = {
       id,
       personCharge,
@@ -35,114 +34,131 @@ export const httpAddFamilyHandler = async (
       familyCategory,
     };
     const newFamily = await Family.create(newFamilyData);
+    if (members.length) {
 
-    // Add the family members
-    await Promise.all(
-      members.map(async (member: FamilyMember) => {
-        const {
-          firstName,
-          lastName,
-          gender,
-          maritalStatus,
-          address,
-          email,
-          dateOfBirth,
-          phoneNumber,
-          isWorking,
-          isPersonCharge,
-          proficient,
-          totalIncome,
-          educationLevel,
-        } = member;
+      try {
+        await Promise.all(
+          members.map(async (member: FamilyMember) => {
+            const {
+              id,
+              firstName,
+              lastName,
+              gender,
+              maritalStatus,
+              address,
+              email,
+              dateOfBirth,
+              phoneNumber,
+              isWorking,
+              isPersonCharge,
+              proficient,
+              totalIncome,
+              educationLevel,
+            } = member;
 
-        // Create a new family member instance and associate it with the family
-        const newMemberData = {
-          id,
-          FamilyId: newFamily.id,
-          firstName,
-          lastName,
-          gender,
-          maritalStatus,
-          address,
-          email,
-          dateOfBirth,
-          phoneNumber,
-          isWorking,
-          isPersonCharge,
-          proficient,
-          totalIncome,
-          educationLevel,
-        };
-        await FamilyMember.create(newMemberData);
-      })
-    );
+            const newMemberData = {
+              id,
+              FamilyId: newFamily.id,
+              firstName,
+              lastName,
+              gender,
+              maritalStatus,
+              address,
+              email,
+              dateOfBirth,
+              phoneNumber,
+              isWorking,
+              isPersonCharge,
+              proficient,
+              totalIncome,
+              educationLevel,
+            };
+            await FamilyMember.create(newMemberData);
+          })
+        );
+        const newFamilyWithMembers = await Family.findOne({
+          where: {
+            id: newFamily.id,
+          },
+          include: {
+            model: FamilyMember,
+            as: "FamilyMember",
+          },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        });
+        return res
+          .status(201)
+          .json({ message: "Family and Family Members added successfully", family: newFamilyWithMembers });
+      } catch (error) {
+        console.error("Error adding family Member:", error);
+        return res.status(500).json({ message: "Failed to add family with members" });
+      }
+    } else {
+      return res
+        .status(201)
+        .json({ message: "Family added successfully", family: newFamily });
+    }
 
-    // Send a success response
-    res
-      .status(201)
-      .json({ message: "Family added successfully", family: newFamily });
   } catch (error) {
-    // Handle any errors
     console.error("Error adding family:", error);
-    res.status(500).json({ message: "Failed to add family" });
+    return res.status(500).json({ message: "Failed to add family without members" });
   }
 };
 
 export const httpGetFamilyHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // Extract the family ID from the request parameters
     const { familyId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
 
-    // Find the family by ID
-    const family = await Family.findByPk(familyId, {
+    const family = await Family.findByPk(parsedFamilyId, {
       include: {
         model: FamilyMember,
         as: "FamilyMember",
       },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
+    if (!family) {
+      return res.status(404).json({ message: "Family not found" })
+    } else {
+      return res.status(200).json({ family });
+    }
 
-    !family
-      ? // If family is not found, send a not found response
-        res.status(404).json({ message: "Family not found" })
-      : // If family is found, send the family object in the response
-        res.status(200).json({ family });
+
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving family:", error);
-    res.status(500).json({ message: "Failed to retrieve family" });
+    return res.status(500).json({ message: "Failed to retrieve family" });
   }
 };
 
 export const httpGetAllFamiliesHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // Retrieve all families from the database
     const families = await Family.findAll();
+    if (families.length === 0) {
+      return res.status(404).json({ message: "There are no families" });
+    } else {
+      return res.status(200).json({ count: families.length, families });
+    }
 
-    // Send the families array in the response
-    res.status(200).json({ count: families.length, families });
   } catch (error) {
-    // Handle any errors
     console.error("Error retrieving families:", error);
-    res.status(500).json({ message: "Failed to retrieve families" });
+    return res.status(500).json({ message: "Failed to retrieve families" });
   }
 };
 
 export const httpEditFamilyHandler = async (
   req: Request,
   res: Response
-): Promise<void> => {
+) => {
   try {
-    // Extract the family ID from the request parameters
     const { familyId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
 
-    // Update the family attributes
     const {
       id,
       personCharge,
@@ -168,36 +184,32 @@ export const httpEditFamilyHandler = async (
     };
 
     const [updatedRowsCount] = await Family.update(updatedFamilyData, {
-      where: { id: familyId },
+      where: { id: parsedFamilyId },
     });
 
     if (updatedRowsCount === 0) {
-      // If no rows were updated, send a not found response
-      res.status(404).json({ message: "Family not found" });
-      return;
+      return res.status(404).json({ message: "Family not found" });
     }
 
-    // Find the updated family by ID
-    const updatedFamily = await Family.findByPk(familyId);
+    const updatedFamily = await Family.findByPk(parsedFamilyId);
 
-    // Send a success response
     res
       .status(200)
       .json({ message: "Family updated successfully", family: updatedFamily });
   } catch (error) {
-    // Handle any errors
     console.error("Error editing family:", error);
-    res.status(500).json({ message: "Failed to edit family" });
+    return res.status(500).json({ message: "Failed to edit family" });
   }
 };
 
 //TODO:prevent the delete family member if there is any Family Member
 export const httpDeleteFamilyHandler = async (req: Request, res: Response) => {
-  const { familyId } = req.params;
-
   try {
+    const { familyId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
+
     const deletedFamilyCount = await Family.destroy({
-      where: { id: familyId },
+      where: { id: parsedFamilyId },
     });
 
     if (deletedFamilyCount === 0) {
