@@ -1,33 +1,22 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
 import FamilyMember from "./FamilyMember";
-
-enum FamilyCategory {
-  Orphans = "Orphans",
-  Poor = "Poor ",
-  Other = "other",
-}
-
-interface FamilyAttributes {
-  id: number;
-  nameOfPersonCharge: string;
-  email: string;
-  address: string;
-  contactNumber: string;
-  houseCondition: string;
-  notes: string;
-  familyCategory: FamilyCategory;
-}
+import { FamilyAttributes } from "../config/types";
+import { FamilyCategory, Priority } from "../config/enums";
+import HealthHistory from "./HealthHistory";
+import MemberNeeds from "./MemberNeeds";
 
 class Family extends Model<FamilyAttributes> implements FamilyAttributes {
   id!: number;
-  nameOfPersonCharge!: string;
+  // DonationId!: number;
+  personCharge!: number;
   email!: string;
   address!: string;
   contactNumber!: string;
   houseCondition!: string;
   notes!: string;
   familyCategory!: FamilyCategory;
+  familyPriority!: Priority;
 }
 
 Family.init(
@@ -37,8 +26,9 @@ Family.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    nameOfPersonCharge: {
-      type: DataTypes.STRING,
+
+    personCharge: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     email: {
@@ -86,11 +76,13 @@ Family.init(
       type: DataTypes.ENUM(...Object.values(FamilyCategory)),
       allowNull: false,
     },
+    familyPriority: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 5,
+    },
   },
-  {
-    sequelize,
-    modelName: "Family",
-  }
+  { sequelize, modelName: "Family" }
 );
 
 Family.hasMany(FamilyMember, {
@@ -99,6 +91,26 @@ Family.hasMany(FamilyMember, {
 });
 
 FamilyMember.belongsTo(Family, {
+  foreignKey: "FamilyId",
+  as: "Family",
+});
+
+Family.hasMany(HealthHistory, {
+  foreignKey: "FamilyId",
+  as: "HealthHistory",
+});
+
+HealthHistory.belongsTo(Family, {
+  foreignKey: "FamilyId",
+  as: "Family",
+});
+
+Family.hasMany(MemberNeeds, {
+  foreignKey: "FamilyId",
+  as: "MemberNeeds",
+});
+
+MemberNeeds.belongsTo(Family, {
   foreignKey: "FamilyId",
   as: "Family",
 });
