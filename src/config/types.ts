@@ -8,6 +8,7 @@ import {
   Priority,
   monyDonationsSource,
 } from "./enums";
+export type environmentAttributes = "development" | "test" | "production";
 
 export interface FamilyAttributes {
   id: number;
