@@ -1,9 +1,14 @@
 name: CI
+const dbHost = process.env.DB_HOST;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbName = process.env.DB_NAME;
 
 on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   build:
@@ -23,7 +28,7 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "DB_HOST=process.env.DB_HOST" >> $GITHUB_ENV
+          echo "DB_HOST=dbHost" >> $GITHUB_ENV
           echo "DB_USER=process.env.DB_TEST_USER" >> $GITHUB_ENV
           echo "DB_PASSWORD=process.env.DB_TEST_PASS" >> $GITHUB_ENV
           echo "DB_NAME=process.env.DB_TEST_NAME" >> $GITHUB_ENV
