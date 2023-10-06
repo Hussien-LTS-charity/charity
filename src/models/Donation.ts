@@ -1,4 +1,4 @@
-import { DataTypes, Model, ValidationError } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import sequelize from "./sequelize";
 import {
   ClothingType,
@@ -43,13 +43,12 @@ Donation.init(
       allowNull: false,
     },
     donationDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
       validate: {
-        isValidDate(value: Date): void {
-          if (isNaN(value.getTime())) {
-            throw new ValidationError("Invalid donation date.", []);
-          }
+        isDate: {
+          args: true,
+          msg: "Invalid Donation Date",
         },
       },
     },
