@@ -1,3 +1,5 @@
+// process.env.NODE_ENV = "test";
+
 import { Request, Response } from "express";
 import supertest from "supertest";
 import { app } from "../src/app";

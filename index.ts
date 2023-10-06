@@ -8,6 +8,7 @@ import Donation from "./src/models/Donation";
 import AfterDonations from "./src/models/AfterDonations";
 import DonationsRecords from "./src/models/DonationsRecords";
 import { app } from "./src/app";
+import sequelize from "./src/models/sequelize";
 
 dotenv.config();
 
@@ -16,14 +17,7 @@ const PORT = process.env.PORT || 3000;
 async function syncModels() {
   try {
     // Sync other models if available
-    await Family.sync({ force: true });
-    await FamilyMember.sync({ force: true });
-    await MemberNeeds.sync({ force: true });
-    await HealthHistory.sync({ force: true });
-    await Donor.sync({ force: true });
-    await Donation.sync({ force: true });
-    await AfterDonations.sync({ force: true });
-    await DonationsRecords.sync({ force: true });
+    await sequelize.sync({ alter: true });
     console.log("Models are synchronized with the database");
     // Start your server or perform other operations here
     app.listen(PORT, () => {
