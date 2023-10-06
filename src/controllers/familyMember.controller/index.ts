@@ -8,13 +8,12 @@ export const httpAddFamilyMemberHandler = async (
   res: Response
 ) => {
   try {
-    const { familyId } = req.params
-    const parsedFamilyId = parseInt(familyId, 10)
-    const family = await Family.findByPk(parsedFamilyId)
+    const { familyId } = req.params;
+    const parsedFamilyId = parseInt(familyId, 10);
+    const family = await Family.findByPk(parsedFamilyId);
     if (!family) {
-
       return res.status(404).json({
-        message: "Failed to retrieve Family"
+        message: "Failed to retrieve Family",
       });
     }
 
@@ -72,8 +71,8 @@ export const httpGetSpecificFamilyMemberHandler = async (
 ) => {
   try {
     const { familyId, familyMemberId } = req.params;
-    const parsedFamilyId = parseInt(familyId, 10)
-    const parsedFamilyMemberId = parseInt(familyMemberId, 10)
+    const parsedFamilyId = parseInt(familyId, 10);
+    const parsedFamilyMemberId = parseInt(familyMemberId, 10);
     const familyMember = await FamilyMember.findOne({
       where: {
         id: parsedFamilyMemberId,
@@ -82,13 +81,15 @@ export const httpGetSpecificFamilyMemberHandler = async (
     });
 
     if (!familyMember) {
-      return res.status(404).json({ message: "family member not found" })
+      return res.status(404).json({ message: "family member not found" });
     } else {
       return res.status(200).json({ familyMember });
     }
   } catch (error) {
     console.error("Error retrieving family member:", error);
-    return res.status(500).json({ message: "Failed to retrieve family member" });
+    return res
+      .status(500)
+      .json({ message: "Failed to retrieve family member" });
   }
 };
 
@@ -98,7 +99,7 @@ export const httpGetAllFamilyMembersHandler = async (
 ) => {
   try {
     const { familyId } = req.params;
-    const parsedFamilyId = parseInt(familyId, 10)
+    const parsedFamilyId = parseInt(familyId, 10);
     const family = await Family.findByPk(parsedFamilyId);
 
     if (!family) {
@@ -110,14 +111,23 @@ export const httpGetAllFamilyMembersHandler = async (
       },
     });
     if (!familyMembers.length) {
-      return res.status(404).json({ count: familyMembers.length, message: "There is no family members" });
+      return res
+        .status(404)
+        .json({
+          count: familyMembers.length,
+          message: "There is no family members",
+        });
     } else {
-      return res.status(200).json({ count: familyMembers.length, familyMembers });
+      return res
+        .status(200)
+        .json({ count: familyMembers.length, familyMembers });
     }
   } catch (error) {
     // Handle any errors
     console.error("Error retrieving family members:", error);
-    return res.status(500).json({ message: "Failed to retrieve family members" });
+    return res
+      .status(500)
+      .json({ message: "Failed to retrieve family members" });
   }
 };
 
@@ -127,8 +137,8 @@ export const httpEditFamilyMemberHandler = async (
 ) => {
   try {
     const { familyId, familyMemberId } = req.params;
-    const parsedFamilyId = parseInt(familyId, 10)
-    const parsedFamilyMemberId = parseInt(familyMemberId, 10)
+    const parsedFamilyId = parseInt(familyId, 10);
+    const parsedFamilyMemberId = parseInt(familyMemberId, 10);
     const {
       id,
       FamilyId,
@@ -200,11 +210,9 @@ export const httpDeleteFamilyMemberHandler = async (
   req: Request,
   res: Response
 ) => {
-  console.log("req.params", req.params);
-
   const { familyId, familyMemberId } = req.params;
-  const parsedFamilyId = parseInt(familyId)
-  const parsedFamilyMemberId = parseInt(familyMemberId)
+  const parsedFamilyId = parseInt(familyId);
+  const parsedFamilyMemberId = parseInt(familyMemberId);
   try {
     const deletedFamilyMemberCount = await FamilyMember.destroy({
       where: {
@@ -219,7 +227,6 @@ export const httpDeleteFamilyMemberHandler = async (
     return res
       .status(200)
       .json({ message: "Family member deleted successfully" });
-
   } catch (error) {
     console.error("Error deleting family member:", error);
     return res.status(500).json({ message: "Internal server error" });
