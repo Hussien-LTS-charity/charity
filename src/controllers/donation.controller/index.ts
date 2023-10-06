@@ -57,7 +57,6 @@ export const httpEditDonationHandler = async (req: Request, res: Response) => {
   try {
     const { donationId } = req.params;
     const parsedDonationId = parseInt(donationId, 10);
-    console.log("==================", parsedDonationId);
 
     const { id, DonorId, donationDate, donationTook, Properties } = req.body;
 

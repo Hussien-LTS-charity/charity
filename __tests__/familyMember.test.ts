@@ -229,7 +229,6 @@ describe("httpDeleteFamilyMemberHandler", () => {
     const response = await request.delete(
       `/api/family-member/${mockRequestBody.id}/${testFamilyMemberId}`
     );
-    console.log(response.body);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Family member deleted successfully");
