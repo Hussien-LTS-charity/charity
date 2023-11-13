@@ -4,8 +4,7 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "start": "NODE_ENV=development node ./dist/index.js",
-    "test": "NODE_ENV=development jest --coverage --verbose --detectOpenHandles",
+    "test": "jest --coverage --verbose --detectOpenHandles",
     "lint": "eslint . --ext .ts,.tsx",
     "build": "tsc",
     "db:create-dev": "sequelize db:create --env=development",
