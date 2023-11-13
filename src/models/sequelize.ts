@@ -12,9 +12,9 @@ console.log("=========================", environment);
 const config = databaseConfig[environment];
 
 const sequelize = new Sequelize({
-  database: config.database,
-  username: config.username,
-  password: config.password,
+  database: "ynnbevvc",
+  username: "ynnbevvc",
+  password: "sYVxsUAck-Ik1uvNl6GY6e6r98FPdTdF",
   host: "peanut.db.elephantsql.com",
   port: 5432,
   dialect: "postgres",
