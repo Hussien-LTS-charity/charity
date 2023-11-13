@@ -60,7 +60,7 @@ export const httpAddFamilyMemberHandler = async (
     });
   } catch (error) {
     // Handle any errors
-    console.error("Error adding Family Member:", error);
+    console.log("Error adding Family Member:", error);
     return res.status(500).json({ message: "Failed to add Family Member" });
   }
 };
@@ -86,7 +86,7 @@ export const httpGetSpecificFamilyMemberHandler = async (
       return res.status(200).json({ familyMember });
     }
   } catch (error) {
-    console.error("Error retrieving family member:", error);
+    console.log("Error retrieving family member:", error);
     return res
       .status(500)
       .json({ message: "Failed to retrieve family member" });
@@ -111,12 +111,10 @@ export const httpGetAllFamilyMembersHandler = async (
       },
     });
     if (!familyMembers.length) {
-      return res
-        .status(404)
-        .json({
-          count: familyMembers.length,
-          message: "There is no family members",
-        });
+      return res.status(404).json({
+        count: familyMembers.length,
+        message: "There is no family members",
+      });
     } else {
       return res
         .status(200)
@@ -124,7 +122,7 @@ export const httpGetAllFamilyMembersHandler = async (
     }
   } catch (error) {
     // Handle any errors
-    console.error("Error retrieving family members:", error);
+    console.log("Error retrieving family members:", error);
     return res
       .status(500)
       .json({ message: "Failed to retrieve family members" });
@@ -201,7 +199,7 @@ export const httpEditFamilyMemberHandler = async (
       familyMember: updatedFamilyMember,
     });
   } catch (error) {
-    console.error("Error editing family member:", error);
+    console.log("Error editing family member:", error);
     return res.status(500).json({ message: "Failed to edit family member" });
   }
 };
@@ -228,7 +226,7 @@ export const httpDeleteFamilyMemberHandler = async (
       .status(200)
       .json({ message: "Family member deleted successfully" });
   } catch (error) {
-    console.error("Error deleting family member:", error);
+    console.log("Error deleting family member:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

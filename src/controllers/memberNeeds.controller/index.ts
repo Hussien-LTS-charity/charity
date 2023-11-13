@@ -45,7 +45,7 @@ export const httpAddMemberNeedsHandler = async (
       memberNeeds: newMemberNeeds,
     });
   } catch (error) {
-    console.error("Error adding Member Needs:", error);
+    console.log("Error adding Member Needs:", error);
     return res.status(500).json({ message: "Failed to add Member Needs" });
   }
 };
@@ -85,7 +85,7 @@ export const httpGetSpecificMemberNeedsHandler = async (
 
     return res.status(200).json({ familyMemberNeeds });
   } catch (error) {
-    console.error("Error retrieving member Needs:", error);
+    console.log("Error retrieving member Needs:", error);
     return res.status(500).json({ message: "Failed to retrieve member Needs" });
   }
 };
@@ -117,7 +117,7 @@ export const httpGetAllMembersNeedsHandler = async (
       familyMembersNeeds,
     });
   } catch (error) {
-    console.error("Error retrieving family members Needs:", error);
+    console.log("Error retrieving family members Needs:", error);
     return res
       .status(500)
       .json({ message: "Failed to retrieve family members Needs" });
@@ -174,7 +174,7 @@ export const httpEditMemberNeedsHandler = async (
       memberNeeds: updatedFamilyMemberNeeds,
     });
   } catch (error) {
-    console.error("Error editing family member Needs:", error);
+    console.log("Error editing family member Needs:", error);
     return res
       .status(500)
       .json({ message: "Failed to edit family member Needs" });
@@ -205,7 +205,7 @@ export const httpDeleteMemberNeedsHandler = async (
       .status(200)
       .json({ message: "Family member Needs deleted successfully" });
   } catch (error) {
-    console.error("Error deleting family member Needs:", error);
+    console.log("Error deleting family member Needs:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

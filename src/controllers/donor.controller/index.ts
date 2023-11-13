@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import { DonorAttributes } from "../../config/types";
 import Donor from "../../models/Donor";
 
-export const httpAddDonorHandler = async (
-  req: Request,
-  res: Response
-) => {
+export const httpAddDonorHandler = async (req: Request, res: Response) => {
   try {
     const {
       id,
@@ -42,7 +39,7 @@ export const httpAddDonorHandler = async (
       .status(201)
       .json({ message: "Donor added successfully", Donor: newDonor });
   } catch (error) {
-    console.error("Error adding Donor:", error);
+    console.log("Error adding Donor:", error);
     return res.status(500).json({ message: "Failed to add Donor" });
   }
 };
@@ -53,16 +50,14 @@ export const httpGetDonorHandler = async (
 ): Promise<void> => {
   try {
     const { donorId } = req.params;
-    const parsedDonorId = parseInt(donorId, 10)
+    const parsedDonorId = parseInt(donorId, 10);
     const donor = await Donor.findByPk(parsedDonorId, {});
 
     !donor
-      ?
-      res.status(404).json({ message: "Donor not found" })
-      :
-      res.status(200).json({ donor });
+      ? res.status(404).json({ message: "Donor not found" })
+      : res.status(200).json({ donor });
   } catch (error) {
-    console.error("Error retrieving Donor:", error);
+    console.log("Error retrieving Donor:", error);
     res.status(500).json({ message: "Failed to retrieve Donor" });
   }
 };
@@ -76,7 +71,7 @@ export const httpGetAllDonorsHandler = async (
 
     res.status(200).json({ count: donors.length, donors });
   } catch (error) {
-    console.error("Error retrieving Donors:", error);
+    console.log("Error retrieving Donors:", error);
     res.status(500).json({ message: "Failed to retrieve Donors" });
   }
 };
@@ -88,7 +83,7 @@ export const httpEditDonorHandler = async (
   try {
     const { donorId } = req.params;
 
-    const parsedDonorId = parseInt(donorId, 10)
+    const parsedDonorId = parseInt(donorId, 10);
 
     const {
       id,
@@ -135,7 +130,7 @@ export const httpEditDonorHandler = async (
       .status(200)
       .json({ message: "Donor updated successfully", donor: updatedDonor });
   } catch (error) {
-    console.error("Error editing Donor:", error);
+    console.log("Error editing Donor:", error);
     res.status(500).json({ message: "Failed to edit Donor" });
   }
 };
@@ -143,7 +138,7 @@ export const httpEditDonorHandler = async (
 //TODO:prevent the delete Donor member if there is any donations
 export const httpDeleteDonorHandler = async (req: Request, res: Response) => {
   const { donorId } = req.params;
-  const parsedDonorId = parseInt(donorId, 10)
+  const parsedDonorId = parseInt(donorId, 10);
 
   try {
     const deletedDonorCount = await Donor.destroy({
@@ -156,7 +151,7 @@ export const httpDeleteDonorHandler = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Donor deleted successfully" });
   } catch (error) {
-    console.error("Error deleting Donor:", error);
+    console.log("Error deleting Donor:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
