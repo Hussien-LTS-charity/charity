@@ -26,11 +26,11 @@ jobs:
         run: npx -p dotenv
 
       - name: Set Environment Variables
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_DEV_USER: ${{ secrets.DB_DEV_USER }}
-          DB_DEV_PASS: ${{ secrets.DB_DEV_PASS }}
-          DB_DEV_NAME: ${{ secrets.DB_DEV_NAME }}
+        # env:
+        #   DB_HOST: ${{ secrets.DB_HOST }}
+        #   DB_DEV_USER: ${{ secrets.DB_DEV_USER }}
+        #   DB_DEV_PASS: ${{ secrets.DB_DEV_PASS }}
+        #   DB_DEV_NAME: ${{ secrets.DB_DEV_NAME }}
         run: |
           echo "DB_HOST=$DB_HOST"
           echo "DB_USER=$DB_DEV_USER"
