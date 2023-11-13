@@ -9,7 +9,6 @@ import { environmentAttributes } from "../config/types";
 const environment: environmentAttributes =
   (process.env.NODE_ENV as environmentAttributes) || "development";
 
-console.log("=========================", environment);
 const config = databaseConfig[environment];
 
 const sequelize = new Sequelize({
