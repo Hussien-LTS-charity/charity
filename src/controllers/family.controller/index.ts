@@ -4,10 +4,7 @@ import { FamilyAttributes } from "../../config/types";
 import Family from "../../models/Family";
 import FamilyMember from "../../models/FamilyMember";
 
-export const httpAddFamilyHandler = async (
-  req: Request,
-  res: Response
-) => {
+export const httpAddFamilyHandler = async (req: Request, res: Response) => {
   try {
     const {
       id,
@@ -35,7 +32,6 @@ export const httpAddFamilyHandler = async (
     };
     const newFamily = await Family.create(newFamilyData);
     if (members.length) {
-
       try {
         await Promise.all(
           members.map(async (member: FamilyMember) => {
@@ -88,27 +84,30 @@ export const httpAddFamilyHandler = async (
         });
         return res
           .status(201)
-          .json({ message: "Family and Family Members added successfully", family: newFamilyWithMembers });
+          .json({
+            message: "Family and Family Members added successfully",
+            family: newFamilyWithMembers,
+          });
       } catch (error) {
-        console.error("Error adding family Member:", error);
-        return res.status(500).json({ message: "Failed to add family with members" });
+        console.log("Error adding family Member:", error);
+        return res
+          .status(500)
+          .json({ message: "Failed to add family with members" });
       }
     } else {
       return res
         .status(201)
         .json({ message: "Family added successfully", family: newFamily });
     }
-
   } catch (error) {
-    console.error("Error adding family:", error);
-    return res.status(500).json({ message: "Failed to add family without members" });
+    console.log("Error adding family:", error);
+    return res
+      .status(500)
+      .json({ message: "Failed to add family without members" });
   }
 };
 
-export const httpGetFamilyHandler = async (
-  req: Request,
-  res: Response
-) => {
+export const httpGetFamilyHandler = async (req: Request, res: Response) => {
   try {
     const { familyId } = req.params;
     const parsedFamilyId = parseInt(familyId, 10);
@@ -121,14 +120,12 @@ export const httpGetFamilyHandler = async (
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     if (!family) {
-      return res.status(404).json({ message: "Family not found" })
+      return res.status(404).json({ message: "Family not found" });
     } else {
       return res.status(200).json({ family });
     }
-
-
   } catch (error) {
-    console.error("Error retrieving family:", error);
+    console.log("Error retrieving family:", error);
     return res.status(500).json({ message: "Failed to retrieve family" });
   }
 };
@@ -144,17 +141,13 @@ export const httpGetAllFamiliesHandler = async (
     } else {
       return res.status(200).json({ count: families.length, families });
     }
-
   } catch (error) {
-    console.error("Error retrieving families:", error);
+    console.log("Error retrieving families:", error);
     return res.status(500).json({ message: "Failed to retrieve families" });
   }
 };
 
-export const httpEditFamilyHandler = async (
-  req: Request,
-  res: Response
-) => {
+export const httpEditFamilyHandler = async (req: Request, res: Response) => {
   try {
     const { familyId } = req.params;
     const parsedFamilyId = parseInt(familyId, 10);
@@ -197,7 +190,7 @@ export const httpEditFamilyHandler = async (
       .status(200)
       .json({ message: "Family updated successfully", family: updatedFamily });
   } catch (error) {
-    console.error("Error editing family:", error);
+    console.log("Error editing family:", error);
     return res.status(500).json({ message: "Failed to edit family" });
   }
 };
@@ -218,7 +211,7 @@ export const httpDeleteFamilyHandler = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Family deleted successfully" });
   } catch (error) {
-    console.error("Error deleting family:", error);
+    console.log("Error deleting family:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

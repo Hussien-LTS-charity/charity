@@ -10,23 +10,21 @@ export const httpAddHealthHistoryHandler = async (
 ) => {
   try {
     const { familyId, familyMemberId } = req.params;
-    const {
-      id,
-      diseaseName,
-      medicineName
-    } = req.body;
+    const { id, diseaseName, medicineName } = req.body;
 
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
 
-    const family = await Family.findByPk(parsedFamilyId)
+    const family = await Family.findByPk(parsedFamilyId);
     if (!family) {
       return res.status(404).json({ message: "Failed to retrieve family" });
     }
 
-    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId)
+    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId);
     if (!familyMember) {
-      return res.status(404).json({ message: "Failed to retrieve family Member" });
+      return res
+        .status(404)
+        .json({ message: "Failed to retrieve family Member" });
     }
 
     const newHealthHistoryData: HealthHistoryAttributes = {
@@ -36,16 +34,14 @@ export const httpAddHealthHistoryHandler = async (
       disease: { diseaseName, medicineName },
     };
 
-    const newHealthHistory = await HealthHistory.create(
-      newHealthHistoryData
-    );
+    const newHealthHistory = await HealthHistory.create(newHealthHistoryData);
 
     return res.status(201).json({
       message: "Health History added successfully",
       healthHistory: newHealthHistory,
     });
   } catch (error) {
-    console.error("Error adding Health History:", error);
+    console.log("Error adding Health History:", error);
     return res.status(500).json({ message: "Failed to add Health History" });
   }
 };
@@ -59,14 +55,16 @@ export const httpGetSpecificHealthHistoryHandler = async (
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
 
-    const family = await Family.findByPk(parsedFamilyId)
+    const family = await Family.findByPk(parsedFamilyId);
     if (!family) {
       return res.status(404).json({ message: "Failed to retrieve family" });
     }
 
-    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId)
+    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId);
     if (!familyMember) {
-      return res.status(404).json({ message: "Failed to retrieve family member" });
+      return res
+        .status(404)
+        .json({ message: "Failed to retrieve family member" });
     }
 
     const healthHistory = await FamilyMember.findOne({
@@ -80,15 +78,12 @@ export const httpGetSpecificHealthHistoryHandler = async (
       },
     });
     if (!healthHistory) {
-      return res
-        .status(404)
-        .json({ message: "health history not found" })
+      return res.status(404).json({ message: "health history not found" });
     } else {
       return res.status(200).json({ healthHistory });
     }
-
   } catch (error) {
-    console.error("Error retrieving health history:", error);
+    console.log("Error retrieving health history:", error);
     return res
       .status(500)
       .json({ message: "Failed to retrieve health history" });
@@ -117,14 +112,17 @@ export const httpGetAllHealthHistoryHandler = async (
       },
     });
     if (!familyMembers.length) {
-      return res
-        .status(404)
-        .json({ message: "There is no health history" });
+      return res.status(404).json({ message: "There is no health history" });
     } else {
-      return res.status(200).json({ count: familyMembers.length, familyMembersHealthHistory: familyMembers });
+      return res
+        .status(200)
+        .json({
+          count: familyMembers.length,
+          familyMembersHealthHistory: familyMembers,
+        });
     }
   } catch (error) {
-    console.error("Error retrieving health history:", error);
+    console.log("Error retrieving health history:", error);
     return res
       .status(500)
       .json({ message: "Failed to retrieve health history" });
@@ -141,20 +139,18 @@ export const httpEditHealthHistoryHandler = async (
     const parsedFamilyId = parseInt(familyId, 10);
     const parsedFamilyMemberId = parseInt(familyMemberId, 10);
 
-    const {
-      diseaseName,
-      medicineName,
-    } = req.body;
+    const { diseaseName, medicineName } = req.body;
 
-
-    const family = await Family.findByPk(parsedFamilyId)
+    const family = await Family.findByPk(parsedFamilyId);
     if (!family) {
       return res.status(404).json({ message: "Failed to retrieve family" });
     }
 
-    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId)
+    const familyMember = await FamilyMember.findByPk(parsedFamilyMemberId);
     if (!familyMember) {
-      return res.status(404).json({ message: "Failed to retrieve family member" });
+      return res
+        .status(404)
+        .json({ message: "Failed to retrieve family member" });
     }
 
     const updatedHealthHistoryData: HealthHistoryAttributes = {
@@ -197,10 +193,8 @@ export const httpEditHealthHistoryHandler = async (
       familyMemberHealthHistory: updatedHealthHistory,
     });
   } catch (error) {
-    console.error("Error editing health history:", error);
-    return res
-      .status(500)
-      .json({ message: "Failed to edit health history" });
+    console.log("Error editing health history:", error);
+    return res.status(500).json({ message: "Failed to edit health history" });
   }
 };
 
@@ -225,11 +219,9 @@ export const httpDeleteHealthHistoryHandler = async (
         .status(200)
         .json({ message: "health history deleted successfully" });
     }
-    return res
-      .status(404)
-      .json({ message: "health history not found" });
+    return res.status(404).json({ message: "health history not found" });
   } catch (error) {
-    console.error("Error deleting health history:", error);
+    console.log("Error deleting health history:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

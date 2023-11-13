@@ -22,7 +22,7 @@ async function syncModels() {
       console.log(`app is live on ${PORT} `);
     });
   } catch (error) {
-    console.error("Unable to synchronize models with the database:", error);
+    console.log("Unable to synchronize models with the database:", error);
   }
 }
 

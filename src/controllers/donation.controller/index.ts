@@ -19,7 +19,7 @@ export const httpAddDonationHandler = async (req: Request, res: Response) => {
       Donation: newDonation,
     });
   } catch (error) {
-    //console.error("Error Adding Donation:", error);
+    //console.log("Error Adding Donation:", error);
     return res.status(500).json({ message: "Failed To Add Donation" });
   }
 };
@@ -34,7 +34,7 @@ export const httpGetDonationHandler = async (req: Request, res: Response) => {
       ? res.status(404).json({ message: "Donation Not Fund" })
       : res.status(200).json({ donation });
   } catch (error) {
-    //console.error("Error Retrieving Donation:", error);
+    //console.log("Error Retrieving Donation:", error);
     res.status(500).json({ message: "Failed To Retrieve Donation" });
   }
 };
@@ -48,7 +48,7 @@ export const httpGetAllDonationsHandler = async (
 
     res.status(200).json({ count: donations.length, donations });
   } catch (error) {
-    //console.error("Error Retrieving Donations:", error);
+    //console.log("Error Retrieving Donations:", error);
     res.status(500).json({ message: "Failed To Retrieve Donations" });
   }
 };
@@ -84,7 +84,7 @@ export const httpEditDonationHandler = async (req: Request, res: Response) => {
       Donation: updatedDonation,
     });
   } catch (error) {
-    //console.error("Error Editing Donation:", error);
+    //console.log("Error Editing Donation:", error);
     res.status(500).json({ message: "Failed To Edit Donation" });
   }
 };
@@ -108,7 +108,7 @@ export const httpDeleteDonationHandler = async (
 
     return res.status(200).json({ message: "Donation Deleted Successfully" });
   } catch (error) {
-    //console.error("Error deleting Donor:", error);
+    //console.log("Error deleting Donor:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
