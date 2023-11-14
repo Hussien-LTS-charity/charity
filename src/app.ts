@@ -1,6 +1,7 @@
 // src/app.ts
 import express, { Request, Response } from "express";
 import morgan from "morgan";
+import cors from "cors";
 import familyRouter from "./routes/family.router";
 import familyMemberRouter from "./routes/familyMember.router";
 import healthHistoryRouter from "./routes/healthHistory.router";
@@ -12,7 +13,7 @@ export const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
-
+app.use(cors());
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, world!");
 });

@@ -12,7 +12,7 @@ import sequelize from "./src/models/sequelize";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3033;
 
 async function syncModels() {
   try {
