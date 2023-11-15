@@ -16,6 +16,11 @@ const sequelize = new Sequelize({
   username: "ynnbevvc",
   password: "sYVxsUAck-Ik1uvNl6GY6e6r98FPdTdF",
   host: "peanut.db.elephantsql.com",
+
+  // database: config.database,
+  // username: config.username,
+  // password: config.password,
+  // host: config.host,
   port: 5432,
   dialect: "postgres",
   dialectOptions: {
