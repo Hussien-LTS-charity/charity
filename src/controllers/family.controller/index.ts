@@ -30,8 +30,9 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
       notes,
       familyCategory,
     };
-    const newFamily = await Family.create(newFamilyData);
-    if (members.length) {
+
+    if (members?.length > 0) {
+      const newFamily = await Family.create(newFamilyData);
       try {
         await Promise.all(
           members.map(async (member: FamilyMember) => {
@@ -70,8 +71,15 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
               educationLevel,
             };
             await FamilyMember.create(newMemberData);
+            if (member.isPersonCharge) {
+              const personCharge = `${member.firstName} ${member.lastName}`;
+              await newFamily.update({
+                personCharge: personCharge,
+              });
+            }
           })
         );
+
         const newFamilyWithMembers = await Family.findOne({
           where: {
             id: newFamily.id,
@@ -82,12 +90,10 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
           },
           attributes: { exclude: ["createdAt", "updatedAt"] },
         });
-        return res
-          .status(201)
-          .json({
-            message: "Family and Family Members added successfully",
-            family: newFamilyWithMembers,
-          });
+        return res.status(201).json({
+          message: "Family and Family Members added successfully",
+          family: newFamilyWithMembers,
+        });
       } catch (error) {
         console.log("Error adding family Member:", error);
         return res
@@ -96,8 +102,8 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
       }
     } else {
       return res
-        .status(201)
-        .json({ message: "Family added successfully", family: newFamily });
+        .status(403)
+        .json({ message: "Should Have at Least One Family Member" });
     }
   } catch (error) {
     console.log("Error adding family:", error);

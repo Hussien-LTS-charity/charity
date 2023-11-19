@@ -9,7 +9,7 @@ import MemberNeeds from "./MemberNeeds";
 class Family extends Model<FamilyAttributes> implements FamilyAttributes {
   id!: number;
   // DonationId!: number;
-  personCharge!: number;
+  personCharge!: string;
   email!: string;
   address!: string;
   contactNumber!: string;
@@ -28,8 +28,7 @@ Family.init(
     },
 
     personCharge: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      type: DataTypes.STRING,
     },
     email: {
       type: DataTypes.STRING,
@@ -70,7 +69,6 @@ Family.init(
     },
     notes: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     familyCategory: {
       type: DataTypes.ENUM(...Object.values(FamilyCategory)),
