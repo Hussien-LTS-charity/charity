@@ -75,6 +75,9 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
               const personCharge = `${member.firstName} ${member.lastName}`;
               await newFamily.update({
                 personCharge: personCharge,
+                email: member.email,
+                address: member.address,
+                contactNumber: member.phoneNumber,
               });
             }
           })

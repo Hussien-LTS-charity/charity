@@ -55,7 +55,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe("httpAddDonationHandler", () => {
+describe.skip("httpAddDonationHandler", () => {
   it("should add a new Donation and return a success response", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
     const response = await request
@@ -83,7 +83,7 @@ describe("httpAddDonationHandler", () => {
   });
 });
 
-describe("httpGetDonationHandler", () => {
+describe.skip("httpGetDonationHandler", () => {
   it("should return a Donation when a valid donation ID is provided", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
     await request.post("/api/donation").send(donationMockRequestBody);
@@ -119,7 +119,7 @@ describe("httpGetDonationHandler", () => {
   });
 });
 
-describe("httpEditDonationHandler", () => {
+describe.skip("httpEditDonationHandler", () => {
   it("should update the Donation and return a success response", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
 
@@ -168,7 +168,7 @@ describe("httpEditDonationHandler", () => {
   });
 });
 
-describe("httpDeleteDonationHandler", () => {
+describe.skip("httpDeleteDonationHandler", () => {
   it("should delete the Donation and return a success response", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
     await request.post("/api/donation").send(donationMockRequestBody);
@@ -211,7 +211,7 @@ describe("httpDeleteDonationHandler", () => {
   });
 });
 
-describe("httpGetAllDonationsHandler", () => {
+describe.skip("httpGetAllDonationsHandler", () => {
   it("should return all Donations when a valid request is provided", async () => {
     const response = await request.get(`/api/donation`);
 

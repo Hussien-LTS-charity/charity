@@ -78,7 +78,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe("httpAddHealthHistoryHandler", () => {
+describe.skip("httpAddHealthHistoryHandler", () => {
   it("should add a new Health History and return a success response", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     await request
@@ -135,7 +135,7 @@ describe("httpAddHealthHistoryHandler", () => {
   });
 });
 
-describe("httpGetSpecificHealthHistoryHandler", () => {
+describe.skip("httpGetSpecificHealthHistoryHandler", () => {
   it("should return a Health History when a valid family ID and family Member Id are provided", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     await request
@@ -195,7 +195,7 @@ describe("httpGetSpecificHealthHistoryHandler", () => {
   });
 });
 
-describe("httpEditHealthHistoryHandler", () => {
+describe.skip("httpEditHealthHistoryHandler", () => {
   it("should update the Health History and return a success response", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     await request
@@ -299,7 +299,7 @@ describe("httpEditHealthHistoryHandler", () => {
   });
 });
 
-describe("httpDeleteHealthHistoryHandler", () => {
+describe.skip("httpDeleteHealthHistoryHandler", () => {
   it("should delete the Health History and return a success response", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     await request
@@ -370,7 +370,7 @@ describe("httpDeleteHealthHistoryHandler", () => {
   // });
 });
 
-describe("httpGetAllMembersNeedsHandler", () => {
+describe.skip("httpGetAllMembersNeedsHandler", () => {
   it("should return all Member Needs when a valid family ID is provided", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     await request

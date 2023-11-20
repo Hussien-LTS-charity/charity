@@ -33,7 +33,7 @@ Family.init(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
       validate: {
         isEmail: {
@@ -43,7 +43,7 @@ Family.init(
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notEmpty: {
           msg: "Address cannot be empty",
@@ -56,7 +56,7 @@ Family.init(
     },
     contactNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         len: {
           args: [10, 15],

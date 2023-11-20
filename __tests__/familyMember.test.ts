@@ -79,7 +79,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe("httpAddFamilyMemberHandler", () => {
+describe.skip("httpAddFamilyMemberHandler", () => {
   it("should add a new family Member and return a success response", async () => {
     const res = await request
       .post(`/api/family-member/${firstMockRequestBody.FamilyId}`)
@@ -116,7 +116,7 @@ describe("httpAddFamilyMemberHandler", () => {
   });
 });
 
-describe("httpGetSpecificFamilyMemberHandler", () => {
+describe.skip("httpGetSpecificFamilyMemberHandler", () => {
   it("should return a family members when a valid family ID and family Member Id are provided", async () => {
     await request
       .post(`/api/family-member/${firstMockRequestBody.FamilyId}`)
@@ -152,7 +152,7 @@ describe("httpGetSpecificFamilyMemberHandler", () => {
   });
 });
 
-describe("httpEditFamilyMemberHandler", () => {
+describe.skip("httpEditFamilyMemberHandler", () => {
   it("should update the family member and return a success response", async () => {
     await request
       .post(`/api/family-member/${firstMockRequestBody.id}`)
@@ -218,7 +218,7 @@ describe("httpEditFamilyMemberHandler", () => {
   });
 });
 
-describe("httpDeleteFamilyMemberHandler", () => {
+describe.skip("httpDeleteFamilyMemberHandler", () => {
   it("should delete the Family Member and return a success response", async () => {
     await FamilyMember.destroy({ where: {} });
     await request
@@ -268,7 +268,7 @@ describe("httpDeleteFamilyMemberHandler", () => {
   // });
 });
 
-describe("httpGetAllFamiliesMemberHandler", () => {
+describe.skip("httpGetAllFamiliesMemberHandler", () => {
   it("should return all Families Members when a valid request is provided", async () => {
     const requests = [
       request

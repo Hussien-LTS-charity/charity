@@ -13,10 +13,10 @@ export type environmentAttributes = "development" | "production";
 export interface FamilyAttributes {
   id: number;
   // DonationId: number;
-  personCharge: string;
-  email: string;
-  address: string;
-  contactNumber: string;
+  personCharge: string | null;
+  email: string | null;
+  address: string | null;
+  contactNumber: string | null;
   houseCondition: string;
   notes: string;
   familyCategory: FamilyCategory;
