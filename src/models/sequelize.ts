@@ -28,7 +28,7 @@ const sequelize = new Sequelize({
     rejectUnauthorized: false, // Ignore self-signed certificates
   },
   // logging: process.env.NODE_ENV !== "production" ? console.log : false,
-  logging: false,
+  logging: true,
 });
 
 export default sequelize;
