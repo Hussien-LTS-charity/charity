@@ -146,7 +146,7 @@ export const httpGetAllFamiliesHandler = async (
   try {
     const families = await Family.findAll();
     if (families.length === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         message: "There are no families",
         count: families.length,
         families,
