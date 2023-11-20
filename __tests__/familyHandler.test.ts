@@ -250,8 +250,9 @@ describe("httpGetAllFamiliesHandler", () => {
   it("should return an empty response if there are no Families", async () => {
     const response = await request.get(`/api/family`);
     expect(response.status).toBe(404);
-    expect(response.body.count).toBeUndefined();
-    expect(response.body.families).toBeUndefined();
+    expect(response.body.count).toBe(0);
+    expect(Array.isArray(response.body.families)).toBe(true);
+    expect(response.body.families).toEqual([]);
     expect(response.body.message).toBe("There are no families");
   });
 
