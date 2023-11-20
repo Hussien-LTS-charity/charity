@@ -29,6 +29,7 @@ Family.init(
 
     personCharge: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,

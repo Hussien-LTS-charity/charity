@@ -31,8 +31,8 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
       familyCategory,
     };
 
+    const newFamily = await Family.create(newFamilyData);
     if (members?.length > 0) {
-      const newFamily = await Family.create(newFamilyData);
       try {
         await Promise.all(
           members.map(async (member: FamilyMember) => {

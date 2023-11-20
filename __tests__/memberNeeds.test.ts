@@ -26,7 +26,7 @@ const mockRequestFamilyMemberBody = {
   dateOfBirth: "12-02-2000",
   phoneNumber: "0788888888",
   isWorking: true,
-  isPersonCharge: false,
+  isPersonCharge: true,
   proficient: "proficient",
   totalIncome: 1000,
   educationLevel: 1,
@@ -34,7 +34,7 @@ const mockRequestFamilyMemberBody = {
 
 const mockRequestFamilyBody = {
   id: 1,
-  personCharge: 1,
+  // personCharge: 1,
   familyPriority: 1,
   email: "test3@tesst.com",
   address: "string",
