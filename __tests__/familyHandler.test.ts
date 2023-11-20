@@ -106,29 +106,6 @@ describe("httpAddFamilyHandler", () => {
     await FamilyMember.destroy({ where: {} });
   });
 
-  // TODO: Failed to add family with members
-  it("should handle the catch block for adding family members", async () => {
-    const mockReq = {
-      body: {},
-    } as unknown as Request;
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
-
-    // Mock Family.create to simulate an error
-    jest
-      .spyOn(Family, "create")
-      .mockRejectedValue(new Error("Failed to create family"));
-
-    await httpAddFamilyHandler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(500);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Failed to add family with members",
-    });
-  });
-
   it("should return 500 and an error message when an error occurs in the handler", async () => {
     const mockReq = {
       body: {},
@@ -142,12 +119,12 @@ describe("httpAddFamilyHandler", () => {
 
     expect(mockRes.status).toHaveBeenCalledWith(500);
     expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Failed to add family without members",
+      message: "Failed to add family with members",
     });
   });
 });
 
-describe.skip("httpGetFamilyHandler", () => {
+describe("httpGetFamilyHandler", () => {
   it("should return a family when a valid family ID is provided", async () => {
     await Family.destroy({ where: {} });
     await FamilyMember.destroy({ where: {} });
@@ -183,7 +160,7 @@ describe.skip("httpGetFamilyHandler", () => {
   });
 });
 
-describe.skip("httpEditFamilyHandler", () => {
+describe("httpEditFamilyHandler", () => {
   it("should update the family and return a success response", async () => {
     await request.post("/api/family").send(mockRequestBody);
 
@@ -229,7 +206,7 @@ describe.skip("httpEditFamilyHandler", () => {
   });
 });
 
-describe.skip("httpDeleteFamilyHandler", () => {
+describe("httpDeleteFamilyHandler", () => {
   it("should delete the family and return a success response", async () => {
     await request.post("/api/family").send(mockRequestBody);
     const response = await request.delete(`/api/family/${mockRequestBody.id}`);
@@ -269,7 +246,7 @@ describe.skip("httpDeleteFamilyHandler", () => {
   });
 });
 
-describe.skip("httpGetAllFamiliesHandler", () => {
+describe("httpGetAllFamiliesHandler", () => {
   it("should return an empty response if there are no Families", async () => {
     const response = await request.get(`/api/family`);
     expect(response.status).toBe(404);

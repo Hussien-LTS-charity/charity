@@ -112,7 +112,7 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
     console.log("Error adding family:", error);
     return res
       .status(500)
-      .json({ message: "Failed to add family without members" });
+      .json({ message: "Failed to add family with members" });
   }
 };
 
