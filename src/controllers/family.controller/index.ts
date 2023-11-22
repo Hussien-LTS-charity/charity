@@ -31,8 +31,8 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
       familyCategory,
     };
 
-    const newFamily = await Family.create(newFamilyData);
     if (members?.length > 0) {
+      const newFamily = await Family.create(newFamilyData);
       try {
         await Promise.all(
           members.map(async (member: FamilyMember) => {
@@ -105,7 +105,7 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
       }
     } else {
       return res
-        .status(403)
+        .status(400)
         .json({ message: "Should Have at Least One Family Member" });
     }
   } catch (error) {
