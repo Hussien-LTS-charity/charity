@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 
 async function syncModels() {
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ alter: true });
     console.log("Models are synchronized with the database");
     app.listen(PORT, () => {
       console.log(`app is live on ${PORT} `);

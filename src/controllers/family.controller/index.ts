@@ -101,12 +101,12 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
         console.log("Error adding family Member:", error);
         return res
           .status(500)
-          .json({ message: "Failed to add family with members" });
+          .json({ message: "Failed to add family members" });
       }
     } else {
       return res
         .status(400)
-        .json({ message: "Should Have at Least One Family Member" });
+        .json({ message: "Should have at least one family member" });
     }
   } catch (error) {
     console.log("Error adding family:", error);

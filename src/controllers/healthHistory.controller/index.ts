@@ -114,12 +114,10 @@ export const httpGetAllHealthHistoryHandler = async (
     if (!familyMembers.length) {
       return res.status(404).json({ message: "There is no health history" });
     } else {
-      return res
-        .status(200)
-        .json({
-          count: familyMembers.length,
-          familyMembersHealthHistory: familyMembers,
-        });
+      return res.status(200).json({
+        count: familyMembers.length,
+        familyMembersHealthHistory: familyMembers,
+      });
     }
   } catch (error) {
     console.log("Error retrieving health history:", error);
@@ -202,15 +200,17 @@ export const httpDeleteHealthHistoryHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { familyId, familyMemberId } = req.params;
+  const { familyId, familyMemberId, healthHistoryId } = req.params;
+  const parsedHealthHistoryId = parseInt(healthHistoryId, 10);
   const parsedFamilyId = parseInt(familyId, 10);
   const parsedFamilyMemberId = parseInt(familyMemberId, 10);
 
   try {
-    const deletedHealthHistoryCount = await FamilyMember.destroy({
+    const deletedHealthHistoryCount = await HealthHistory.destroy({
       where: {
-        id: parsedFamilyMemberId,
+        id: parsedHealthHistoryId,
         FamilyId: parsedFamilyId,
+        familyMemberId: parsedFamilyMemberId,
       },
     });
 
