@@ -45,9 +45,6 @@ Family.init(
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        notEmpty: {
-          msg: "Address cannot be empty",
-        },
         len: {
           args: [5, 100],
           msg: "Address must be between 5 and 100 characters",
