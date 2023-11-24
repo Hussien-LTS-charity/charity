@@ -99,6 +99,9 @@ export const httpAddFamilyHandler = async (req: Request, res: Response) => {
         });
       } catch (error) {
         console.log("Error adding family Member:", error);
+        await Family.destroy({
+          where: { id: newFamily.id },
+        });
         return res
           .status(500)
           .json({ message: "Failed to add family members" });
