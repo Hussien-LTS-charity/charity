@@ -212,19 +212,35 @@ export const httpDeleteFamilyMemberHandler = async (
   const parsedFamilyId = parseInt(familyId);
   const parsedFamilyMemberId = parseInt(familyMemberId);
   try {
-    const deletedFamilyMemberCount = await FamilyMember.destroy({
+    const familyMemberData = await FamilyMember.findOne({
       where: {
         id: parsedFamilyMemberId,
         FamilyId: parsedFamilyId,
       },
     });
+    const isPersonOnCharge = familyMemberData?.isPersonCharge;
+    if (isPersonOnCharge) {
+      return res
+        .status(403)
+        .json({
+          message:
+            "Family member can not be deleted you should delete the whole family",
+        });
+    } else {
+      const deletedFamilyMemberCount = await FamilyMember.destroy({
+        where: {
+          id: parsedFamilyMemberId,
+          FamilyId: parsedFamilyId,
+        },
+      });
 
-    if (deletedFamilyMemberCount === 0) {
-      return res.status(404).json({ message: "Family member not found" });
+      if (deletedFamilyMemberCount === 0) {
+        return res.status(404).json({ message: "Family member not found" });
+      }
+      return res
+        .status(200)
+        .json({ message: "Family member deleted successfully" });
     }
-    return res
-      .status(200)
-      .json({ message: "Family member deleted successfully" });
   } catch (error) {
     console.log("Error deleting family member:", error);
     return res.status(500).json({ message: "Internal server error" });
