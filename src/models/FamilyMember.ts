@@ -7,7 +7,8 @@ import { Gender, MaritalStatus } from "../config/enums";
 
 class FamilyMember
   extends Model<FamilyMemberAttributes>
-  implements FamilyMemberAttributes {
+  implements FamilyMemberAttributes
+{
   id!: number;
   FamilyId!: number;
   firstName!: string;
@@ -76,7 +77,7 @@ FamilyMember.init(
       },
     },
     dateOfBirth: {
-      type: DataTypes.DATE, // Use DataTypes.DATEONLY for date-only values
+      type: DataTypes.DATEONLY,
       allowNull: false,
       validate: {
         isDate: {
