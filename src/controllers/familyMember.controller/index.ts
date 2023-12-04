@@ -19,7 +19,6 @@ export const httpAddFamilyMemberHandler = async (
 
     const {
       id,
-      // FamilyId,
       firstName,
       lastName,
       gender,
