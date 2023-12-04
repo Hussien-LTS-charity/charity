@@ -1,12 +1,12 @@
 export enum FamilyCategory {
-  Orphans = "orphans",
-  Poor = "poor",
-  Other = "other",
+  Orphans = "Orphans",
+  Poor = "Poor",
+  Other = "Other",
 }
 
 export enum Gender {
-  Male = "male",
-  Female = "female",
+  Male = "Male",
+  Female = "Female",
 }
 
 export enum MaritalStatus {
