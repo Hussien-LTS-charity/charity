@@ -120,7 +120,8 @@ export const httpEditDonorHandler = async (
     });
 
     if (updatedRowsCount === 0) {
-      res.status(404).json({ message: "Donor not found" });
+      //TODO: change the msg to no updates....
+      res.status(200).json({ message: "There are No Records Were Updated" });
       return;
     }
 

@@ -18,14 +18,14 @@ const mockRequestBodyWithMembers = {
   id: 1,
   houseCondition: "string",
   notes: "string",
-  familyCategory: "orphans",
+  familyCategory: "Orphans",
   members: [
     {
       id: 1,
       FamilyId: 1,
       firstName: "DDDDD",
       lastName: "DDDDD",
-      gender: "male",
+      gender: "Male",
       maritalStatus: "Single",
       address: "DDDDDDDDDDDDDDDDDDD",
       email: "DDDDD@DDsdwDDD.gmail",
@@ -42,7 +42,7 @@ const mockRequestBodyWithMembers = {
       FamilyId: 1,
       firstName: "DDDDD",
       lastName: "DDDDD",
-      gender: "male",
+      gender: "Male",
       maritalStatus: "Single",
       address: "DDDDDDDDDDDDDDDDDDD",
       email: "ertgvcf@DDsdwDDD.gmail",
@@ -61,7 +61,7 @@ const mockRequestBodyWithoutMembers = {
   id: 1,
   houseCondition: "string",
   notes: "string",
-  familyCategory: "orphans",
+  familyCategory: "Orphans",
   members: [],
 };
 
@@ -79,7 +79,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe.skip("httpAddFamilyHandler", () => {
+describe("httpAddFamilyHandler", () => {
   it("should add a new family With Members and return a success response", async () => {
     await Family.destroy({ where: {} });
     await FamilyMember.destroy({ where: {} });
@@ -137,7 +137,7 @@ describe.skip("httpAddFamilyHandler", () => {
   });
 });
 
-describe.skip("httpGetFamilyHandler", () => {
+describe("httpGetFamilyHandler", () => {
   it("should return a family when a valid family ID is provided", async () => {
     await Family.destroy({ where: {} });
     await FamilyMember.destroy({ where: {} });
@@ -173,7 +173,7 @@ describe.skip("httpGetFamilyHandler", () => {
   });
 });
 
-describe.skip("httpEditFamilyHandler", () => {
+describe("httpEditFamilyHandler", () => {
   it("should update the family and return a success response", async () => {
     await request.post("/api/family").send(mockRequestBodyWithMembers);
 
@@ -194,13 +194,13 @@ describe.skip("httpEditFamilyHandler", () => {
     }
   });
 
-  it("should return a 404 status code when the family to update is not found", async () => {
+  it("should return a 200 status code when the family to update is not found", async () => {
     const response = await request
       .put("/api/family/22")
       .send(updatedMockRequestBody);
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Family not found");
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("There are No Records Were Updated");
   });
 
   it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
@@ -221,7 +221,7 @@ describe.skip("httpEditFamilyHandler", () => {
   });
 });
 
-describe.skip("httpDeleteFamilyHandler", () => {
+describe("httpDeleteFamilyHandler", () => {
   it("should delete the family and return a success response", async () => {
     await request.post("/api/family").send(mockRequestBodyWithMembers);
     const response = await request.delete(
@@ -263,7 +263,7 @@ describe.skip("httpDeleteFamilyHandler", () => {
   });
 });
 
-describe.skip("httpGetAllFamiliesHandler", () => {
+describe("httpGetAllFamiliesHandler", () => {
   it("should return an empty response if there are no Families", async () => {
     const response = await request.get(`/api/family`);
     expect(response.status).toBe(200);

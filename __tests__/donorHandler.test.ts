@@ -19,7 +19,7 @@ const mockRequestBody = {
   nationalNumber: 123456,
   firstName: "firstName",
   lastName: "lastName",
-  gender: "male",
+  gender: "Male",
   email: "test@test.com",
   bankAccountNumber: 1234567,
   address: "address",
@@ -41,7 +41,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe.skip("httpAddDonorHandler", () => {
+describe("httpAddDonorHandler", () => {
   it("should add a new donor and return a success response", async () => {
     const response = await request.post("/api/donor").send(mockRequestBody);
 
@@ -66,7 +66,7 @@ describe.skip("httpAddDonorHandler", () => {
   });
 });
 
-describe.skip("httpGetDonorHandler", () => {
+describe("httpGetDonorHandler", () => {
   it("should return a Donor when a valid donor ID is provided", async () => {
     await request.post("/api/donor").send(mockRequestBody);
 
@@ -101,7 +101,7 @@ describe.skip("httpGetDonorHandler", () => {
   });
 });
 
-describe.skip("httpEditDonorHandler", () => {
+describe("httpEditDonorHandler", () => {
   it("should update the donor and return a success response", async () => {
     await request.post("/api/donor").send(mockRequestBody);
 
@@ -119,15 +119,15 @@ describe.skip("httpEditDonorHandler", () => {
     }
   });
 
-  it("should return a 404 status code when the family to update is not found", async () => {
+  it("should return a 200 status code when the family to update is not found", async () => {
     await request.post("/api/donor").send(mockRequestBody);
 
     const response = await request
       .put(`/api/donor/44`)
       .send(updatedMockRequestBody);
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Donor not found");
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("There are No Records Were Updated");
   });
 
   it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
@@ -148,7 +148,7 @@ describe.skip("httpEditDonorHandler", () => {
   });
 });
 
-describe.skip("httpDeleteDonorHandler", () => {
+describe("httpDeleteDonorHandler", () => {
   it("should delete the Donor and return a success response", async () => {
     await request.post("/api/donor").send(mockRequestBody);
     const testDonorId = mockRequestBody.id;
@@ -190,7 +190,7 @@ describe.skip("httpDeleteDonorHandler", () => {
   });
 });
 
-describe.skip("httpGetAllDonorsHandler", () => {
+describe("httpGetAllDonorsHandler", () => {
   it("should return all Donors when a valid request is provided", async () => {
     const response = await request.get(`/api/donor`);
 

@@ -183,7 +183,9 @@ export const httpEditFamilyMemberHandler = async (
     );
 
     if (updatedRowsCount === 0) {
-      return res.status(404).json({ message: "Family member not found" });
+      return res
+        .status(200)
+        .json({ message: "There are No Records Were Updated" });
     }
 
     const updatedFamilyMember = await FamilyMember.findOne({

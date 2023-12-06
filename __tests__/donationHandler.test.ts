@@ -34,7 +34,7 @@ const donorMockRequestBody = {
   nationalNumber: 123456,
   firstName: "firstName",
   lastName: "lastName",
-  gender: "male",
+  gender: "Male",
   email: "test@test.com",
   bankAccountNumber: 1234567,
   address: "address",
@@ -55,7 +55,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe.skip("httpAddDonationHandler", () => {
+describe("httpAddDonationHandler", () => {
   it("should add a new Donation and return a success response", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
     const response = await request
@@ -83,7 +83,7 @@ describe.skip("httpAddDonationHandler", () => {
   });
 });
 
-describe.skip("httpGetDonationHandler", () => {
+describe("httpGetDonationHandler", () => {
   it("should return a Donation when a valid donation ID is provided", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
     await request.post("/api/donation").send(donationMockRequestBody);
@@ -119,7 +119,7 @@ describe.skip("httpGetDonationHandler", () => {
   });
 });
 
-describe.skip("httpEditDonationHandler", () => {
+describe("httpEditDonationHandler", () => {
   it("should update the Donation and return a success response", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
 
@@ -139,15 +139,15 @@ describe.skip("httpEditDonationHandler", () => {
     }
   });
 
-  it("should return a 404 status code when the Donation to update is not found", async () => {
+  it("should return a 200 status code when the Donation to update is not found", async () => {
     await request.post("/api/donation").send(donationMockRequestBody);
 
     const response = await request
       .put(`/api/donation/44`)
       .send(updatedMockRequestBody);
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Donation Not Found");
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("There are No Records Were Updated");
   });
 
   it("should return a 500 status code and an error message when an error occurs in the handler", async () => {
@@ -168,7 +168,7 @@ describe.skip("httpEditDonationHandler", () => {
   });
 });
 
-describe.skip("httpDeleteDonationHandler", () => {
+describe("httpDeleteDonationHandler", () => {
   it("should delete the Donation and return a success response", async () => {
     await request.post("/api/donor").send(donorMockRequestBody);
     await request.post("/api/donation").send(donationMockRequestBody);
@@ -211,7 +211,7 @@ describe.skip("httpDeleteDonationHandler", () => {
   });
 });
 
-describe.skip("httpGetAllDonationsHandler", () => {
+describe("httpGetAllDonationsHandler", () => {
   it("should return all Donations when a valid request is provided", async () => {
     const response = await request.get(`/api/donation`);
 

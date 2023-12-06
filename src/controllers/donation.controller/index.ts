@@ -73,7 +73,9 @@ export const httpEditDonationHandler = async (req: Request, res: Response) => {
     });
 
     if (updatedRowsCount === 0) {
-      return res.status(404).json({ message: "Donation Not Found" });
+      return res
+        .status(200)
+        .json({ message: "There are No Records Were Updated" });
     }
 
     const updatedDonation = await Donation.findByPk(parsedDonationId);
