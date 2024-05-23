@@ -20,14 +20,14 @@ const mockRequestFamilyBody = {
   id: 1,
   houseCondition: "string",
   notes: "string",
-  familyCategory: "orphans",
+  familyCategory: "Orphans",
   members: [
     {
       id: 1,
       FamilyId: 1,
       firstName: "DDDDD",
       lastName: "DDDDD",
-      gender: "male",
+      gender: "Male",
       maritalStatus: "Single",
       address: "DDDDDDDDDDDDDDDDDDD",
       email: "DDDDD@DDsdwDDD.gmail",
@@ -44,7 +44,7 @@ const mockRequestFamilyBody = {
       FamilyId: 1,
       firstName: "DDDDD",
       lastName: "DDDDD",
-      gender: "male",
+      gender: "Male",
       maritalStatus: "Single",
       address: "DDDDDDDDDDDDDDDDDDD",
       email: "ertgvcf@DDsdwDDD.gmail",
@@ -91,7 +91,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe.skip("httpAddHealthHistoryHandler", () => {
+describe("httpAddHealthHistoryHandler", () => {
   it("should add a new Health History and return a success response", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
 
@@ -145,7 +145,7 @@ describe.skip("httpAddHealthHistoryHandler", () => {
   });
 });
 
-describe.skip("httpGetSpecificHealthHistoryHandler", () => {
+describe("httpGetSpecificHealthHistoryHandler", () => {
   it("should return a Health History when a valid family ID and family Member Id are provided", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     // await request
@@ -205,7 +205,7 @@ describe.skip("httpGetSpecificHealthHistoryHandler", () => {
   });
 });
 
-describe.skip("httpEditHealthHistoryHandler", () => {
+describe("httpEditHealthHistoryHandler", () => {
   it("should update the Health History and return a success response", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
     // await request
@@ -307,7 +307,7 @@ describe.skip("httpEditHealthHistoryHandler", () => {
   });
 });
 
-describe.skip("httpDeleteHealthHistoryHandler", () => {
+describe("httpDeleteHealthHistoryHandler", () => {
   it("should delete the Health History and return a success response", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
 
@@ -375,7 +375,7 @@ describe.skip("httpDeleteHealthHistoryHandler", () => {
   // });
 });
 
-describe.skip("httpGetAllMembersNeedsHandler", () => {
+describe("httpGetAllMembersNeedsHandler", () => {
   it("should return all Member Needs when a valid family ID is provided", async () => {
     await request.post("/api/family").send(mockRequestFamilyBody);
 

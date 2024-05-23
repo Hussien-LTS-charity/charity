@@ -18,14 +18,14 @@ const mockRequestBody = {
   id: 1,
   houseCondition: "string",
   notes: "string",
-  familyCategory: "orphans",
+  familyCategory: "Orphans",
   members: [
     {
       id: 1,
       FamilyId: 1,
       firstName: "DDDDD",
       lastName: "DDDDD",
-      gender: "male",
+      gender: "Male",
       maritalStatus: "Single",
       address: "DDDDDDDDDDDDDDDDDDD",
       email: "DDDDD@DDsdwDDD.gmail",
@@ -42,7 +42,7 @@ const mockRequestBody = {
       FamilyId: 1,
       firstName: "DDDDD",
       lastName: "DDDDD",
-      gender: "male",
+      gender: "Male",
       maritalStatus: "Single",
       address: "DDDDDDDDDDDDDDDDDDD",
       email: "ertgvcf@DDsdwDDD.gmail",
@@ -62,7 +62,7 @@ const firstMockRequestBody = {
   FamilyId: 1,
   firstName: "firstName",
   lastName: "lastName",
-  gender: "male",
+  gender: "Male",
   maritalStatus: "Single",
   address: "address",
   email: "test@tesst.com",
@@ -80,7 +80,7 @@ const secondMockRequestBody = {
   FamilyId: 1,
   firstName: "firstName",
   lastName: "lastName",
-  gender: "male",
+  gender: "Male",
   maritalStatus: "Single",
   address: "address",
   email: "test@tesst.com",
@@ -109,7 +109,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe.skip("httpAddFamilyMemberHandler", () => {
+describe("httpAddFamilyMemberHandler", () => {
   it("should add a new family Member and return a success response", async () => {
     await request.post("/api/family").send(mockRequestBody);
 
@@ -148,7 +148,7 @@ describe.skip("httpAddFamilyMemberHandler", () => {
   });
 });
 
-describe.skip("httpGetSpecificFamilyMemberHandler", () => {
+describe("httpGetSpecificFamilyMemberHandler", () => {
   it("should return a family members when a valid family ID and family Member Id are provided", async () => {
     await Family.destroy({ where: {} });
     await FamilyMember.destroy({ where: {} });
@@ -184,7 +184,7 @@ describe.skip("httpGetSpecificFamilyMemberHandler", () => {
   });
 });
 
-describe.skip("httpEditFamilyMemberHandler", () => {
+describe("httpEditFamilyMemberHandler", () => {
   it("should update the family member and return a success response", async () => {
     await Family.destroy({ where: {} });
     await FamilyMember.destroy({ where: {} });
@@ -252,7 +252,7 @@ describe.skip("httpEditFamilyMemberHandler", () => {
   });
 });
 
-describe.skip("httpDeleteFamilyMemberHandler", () => {
+describe("httpDeleteFamilyMemberHandler", () => {
   it("should delete the Family Member and return a success response", async () => {
     await FamilyMember.destroy({ where: {} });
     await request
@@ -302,7 +302,7 @@ describe.skip("httpDeleteFamilyMemberHandler", () => {
   // });
 });
 
-describe.skip("httpGetAllFamiliesMemberHandler", () => {
+describe("httpGetAllFamiliesMemberHandler", () => {
   it("should return all Families Members when a valid request is provided", async () => {
     const requests = [
       request
