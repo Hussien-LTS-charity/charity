@@ -256,7 +256,7 @@ describe("httpEditHealthHistoryHandler", () => {
     }
   });
 
-  it("should return a 404 status code if invalid family ID provided", async () => {
+  it("should return a 200 status code if invalid family ID provided", async () => {
     const response = await request
       .put(`/api/health-history/658/${mockRequestFamilyBody.members[0].id}/123`)
       .send(updatedMockRequestBody);
@@ -274,17 +274,15 @@ describe("httpEditHealthHistoryHandler", () => {
     expect(response.body.message).toBe("Failed to retrieve family member");
   });
 
-  it("should return a 404 status code if invalid member needs ID provided", async () => {
+  it("should return a 200 status code if invalid member needs ID provided", async () => {
     const response = await request
       .put(
         `/api/health-history/${mockRequestFamilyBody.id}/${mockRequestFamilyBody.members[0].id}/11112`
       )
       .send(updatedMockRequestBody);
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe(
-      "family member health history not found"
-    );
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("There are No Records Were Updated");
   });
 
   it("should return a 500 status code and an error message when an error occurs in the handler", async () => {

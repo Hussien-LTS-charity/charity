@@ -119,15 +119,15 @@ describe("httpEditDonorHandler", () => {
     }
   });
 
-  it("should return a 404 status code when the family to update is not found", async () => {
+  it("should return a 200 status code when the family to update is not found", async () => {
     await request.post("/api/donor").send(mockRequestBody);
 
     const response = await request
       .put(`/api/donor/44`)
       .send(updatedMockRequestBody);
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Donor not found");
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("There are No Records Were Updated");
   });
 
   it("should return a 500 status code and an error message when an error occurs in the handler", async () => {

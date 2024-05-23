@@ -171,8 +171,8 @@ export const httpEditHealthHistoryHandler = async (
 
     if (updatedRowsCount === 0) {
       return res
-        .status(404)
-        .json({ message: "family member health history not found" });
+        .status(200)
+        .json({ message: "There are No Records Were Updated" });
     }
 
     const updatedHealthHistory = await FamilyMember.findOne({

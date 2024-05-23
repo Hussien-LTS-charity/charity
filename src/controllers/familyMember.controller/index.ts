@@ -19,7 +19,6 @@ export const httpAddFamilyMemberHandler = async (
 
     const {
       id,
-      FamilyId,
       firstName,
       lastName,
       gender,
@@ -37,7 +36,7 @@ export const httpAddFamilyMemberHandler = async (
 
     const newFamilyMemberData: FamilyMemberAttributes = {
       id,
-      FamilyId,
+      FamilyId: parsedFamilyId,
       firstName,
       lastName,
       gender,
@@ -52,7 +51,7 @@ export const httpAddFamilyMemberHandler = async (
       totalIncome,
       educationLevel,
     };
-    const newFamilyMember = await FamilyMember.create(newFamilyMemberData);
+    const newFamilyMember = await FamilyMember.create(newFamilyMemberData, {});
 
     return res.status(201).json({
       message: "Family Member added successfully",
@@ -184,7 +183,9 @@ export const httpEditFamilyMemberHandler = async (
     );
 
     if (updatedRowsCount === 0) {
-      return res.status(404).json({ message: "Family member not found" });
+      return res
+        .status(200)
+        .json({ message: "There are No Records Were Updated" });
     }
 
     const updatedFamilyMember = await FamilyMember.findOne({
@@ -220,12 +221,10 @@ export const httpDeleteFamilyMemberHandler = async (
     });
     const isPersonOnCharge = familyMemberData?.isPersonCharge;
     if (isPersonOnCharge) {
-      return res
-        .status(403)
-        .json({
-          message:
-            "Family member can not be deleted you should delete the whole family",
-        });
+      return res.status(403).json({
+        message:
+          "Family member can not be deleted you should delete the whole family",
+      });
     } else {
       const deletedFamilyMemberCount = await FamilyMember.destroy({
         where: {

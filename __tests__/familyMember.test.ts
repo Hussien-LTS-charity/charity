@@ -215,13 +215,13 @@ describe("httpEditFamilyMemberHandler", () => {
     }
   });
 
-  it("should return a 404 status code when the family member to update is not found", async () => {
+  it("should return a 200 status code when the family member to update is not found", async () => {
     const response = await request
       .put(`/api/family-member/${mockRequestBody.id}/22`)
       .send(updatedMockRequestBody);
 
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Family member not found");
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("There are No Records Were Updated");
 
     const updatedFamily = await FamilyMember.findOne({
       where: {
@@ -257,8 +257,8 @@ describe("httpDeleteFamilyMemberHandler", () => {
     await FamilyMember.destroy({ where: {} });
     await request
       .post(`/api/family-member/${mockRequestBody.id}`)
-      .send(firstMockRequestBody);
-    const testFamilyMemberId = firstMockRequestBody.id;
+      .send(secondMockRequestBody);
+    const testFamilyMemberId = secondMockRequestBody.id;
 
     const response = await request.delete(
       `/api/family-member/${mockRequestBody.id}/${testFamilyMemberId}`

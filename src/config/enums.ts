@@ -26,8 +26,8 @@ export enum Priority {
 
 export enum DonorCategory {
   Committed = "Committed",
-  OneTime = "OneTime ",
-  Repetitive = "Repetitive ",
+  OneTime = "OneTime",
+  Repetitive = "Repetitive",
 }
 
 export enum monyDonationsSource {

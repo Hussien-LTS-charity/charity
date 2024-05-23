@@ -197,7 +197,9 @@ export const httpEditFamilyHandler = async (req: Request, res: Response) => {
     });
 
     if (updatedRowsCount === 0) {
-      return res.status(404).json({ message: "Family not found" });
+      return res
+        .status(200)
+        .json({ message: "There are No Records Were Updated" });
     }
 
     const updatedFamily = await Family.findByPk(parsedFamilyId);
